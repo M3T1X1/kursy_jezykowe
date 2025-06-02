@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('adres');
             $table->string('nr_telefonu');
             $table->string('adres_zdjecia')->nullable();
+            $table->string('role')->default('klient');
             $table->timestamps();
         });
     }

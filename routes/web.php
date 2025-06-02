@@ -14,6 +14,8 @@ use App\Http\Controllers\PublicCourseController;
 use App\Http\Controllers\RejestracjaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\InstruktorzyController;
+use App\Http\Controllers\ReservationController;
+
 
 // Test połączenia z bazą
 Route::get('/test-db', function () {
@@ -28,14 +30,12 @@ Route::get('/home', function () {
     return view('home');
 });
 
-// Oferta kursów
-Route::get('/oferta', [PublicCourseController::class, 'index'])->name('oferta');
 
-// Rezerwacja
-Route::get('/rezerwacja', function (Request $request) {
-    $courseName = $request->query('course');
-    return view('rezerwacja', ['courseName' => $courseName]);
-})->name('rezerwacja');
+//rezerwacja
+Route::get('/rezerwacja', [ReservationController::class, 'create'])->name('rezerwacja.create');
+Route::post('/rezerwacja', [ReservationController::class, 'store'])->name('rezerwacja.submit');
+
+
 
 // Instruktorzy (publiczny widok)
 Route::get('/instruktorzy', [InstruktorzyController::class, 'index'])->name('instruktorzy.index');
@@ -56,12 +56,15 @@ Route::get('/app', function () {
 });
 
 // Panel admina
-Route::middleware(['auth', 'admin'])->group(function () {
+    Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
+    //Route::get('/dashboard', function () {
+    //    return view('dashboard');
+    //});
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 
     // Klienci
     Route::get('/klienci', [KlientController::class, 'index'])->name('klienci.index');
@@ -71,8 +74,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/klienci/{id_klienta}', [KlientController::class, 'update'])->name('klienci.update');
 
     // Kursy
-    Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
-    Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
+
+    Route::resource('kursy', CourseController::class);
+// Oferta kursów
+Route::get('/oferta', [PublicCourseController::class, 'index'])->name('oferta');
+
 
     // Transakcje i zniżki
     Route::get('/admin/transakcje', [AdminController::class, 'showTransactions'])->name('admin.transakcje');

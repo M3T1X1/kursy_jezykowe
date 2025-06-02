@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->string('nazwa_znizki');
             $table->integer('wartosc'); // np. 10 (procent)
             $table->text('opis')->nullable();
+            $table->boolean('active')->default(true); // Dodana kolumna active
             $table->timestamps();
         });
     }
