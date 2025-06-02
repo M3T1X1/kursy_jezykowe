@@ -45,7 +45,7 @@ class CourseController extends Controller
         'data_zakonczenia' => 'required|date|after_or_equal:data_rozpoczecia',
         'cena' => 'required|numeric|min:0',
         'liczba_miejsc' => 'required|integer|min:1',
-        'id_8a' => 'required|exists:instruktorzy,id',
+        'id_instruktora' => 'required|exists:instruktorzy,id',
     ]);
 
     $course->update($validatedData);

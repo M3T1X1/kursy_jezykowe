@@ -9,7 +9,7 @@ class InstruktorzyTableSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('instruktorzy')->insert([
+        $instruktorzy = [
             [
                 'email' => 'jan.kowalski@example.com',
                 'imie' => 'Jan',
@@ -37,6 +37,13 @@ class InstruktorzyTableSeeder extends Seeder
                 'poziom' => 'Początkujący',
                 'placa' => 40.00,
             ],
-        ]);
+        ];
+
+        foreach ($instruktorzy as $instruktor) {
+            DB::table('instruktorzy')->updateOrInsert(
+                ['email' => $instruktor['email']],
+                $instruktor
+            );
+        }
     }
 }
