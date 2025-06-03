@@ -138,7 +138,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach ($instructors as $instruktor)
+          @foreach ($instruktorzy as $instruktor)
             <tr>
               <td>{{ $instruktor->name }}</td>
               <td>{{ $instruktor->email }}</td>
