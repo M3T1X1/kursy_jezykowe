@@ -5,8 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Instruktor extends Model
 {
-    protected $table = 'instruktorzy';
-    protected $primaryKey = 'id'; // standard
+    protected $table = 'instruktorzy';  // tutaj dokładnie ta nazwa
+
+    protected $primaryKey = 'id';
 
     protected $fillable = ['email', 'imie', 'nazwisko', 'jezyk', 'adres_zdjecia', 'poziom', 'placa'];
 

@@ -100,7 +100,8 @@
       </div>
     @endif
 
-    <form action="{{ url('instruktorzy/store') }}" method="POST">
+    <form action="{{ url('instruktorzy/store') }}" method="POST" enctype="multipart/form-data">
+
       @csrf
       <div class="mb-3">
         <label for="imie" class="form-label">Imię</label>
@@ -130,12 +131,24 @@
 
       <div class="mb-3">
         <label for="poziom" class="form-label">Poziom</label>
-        <input type="text" class="form-control" id="poziom" name="poziom" value="{{ old('poziom') }}" required />
-      </div>
+        <select id="poziom" name="poziom" class="form-select" required>
+            <option value="" disabled selected>Wybierz poziom</option>
+            <option value="Początkujący" {{ old('poziom') == 'Początkujący' ? 'selected' : '' }}>Początkujący</option>
+            <option value="Średniozaawansowany" {{ old('poziom') == 'Średniozaawansowany' ? 'selected' : '' }}>Średniozaawansowany</option>
+            <option value="Zaawansowany" {{ old('poziom') == 'Zaawansowany' ? 'selected' : '' }}>Zaawansowany</option>
+            <option value="Ekspert" {{ old('poziom') == 'Ekspert' ? 'selected' : '' }}>Ekspert</option>
+        </select>
+    </div>
+
 
       <div class="mb-3">
         <label for="placa" class="form-label">Płaca (zł/h)</label>
         <input type="number" step="0.01" min="0" class="form-control" id="placa" name="placa" value="{{ old('placa') }}" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="zdjecie" class="form-label">Zdjęcie profilowe</label>
+        <input type="file" class="form-control" id="zdjecie" name="zdjecie" accept="image/*" required />
       </div>
 
       <button type="submit" class="btn btn-primary float-end">Dodaj Instruktora</button>

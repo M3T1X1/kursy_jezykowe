@@ -11,9 +11,9 @@
   <div class="container bg-white p-4 rounded shadow-sm" style="max-width: 700px; margin: auto;">
     <h2 class="mb-4">Edytuj Instruktora</h2>
 
-    <form action="{{ url('instruktorzy/update/' . $instruktor->id) }}" method="POST">
-      @csrf
-      @method('PUT')
+   <form action="{{ route('instruktorzy.update', $instruktor->id) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @method('PUT')
 
       <div class="mb-3">
         <label for="imie" class="form-label">Imię</label>
@@ -56,16 +56,25 @@
     </select>
     </div>
 
-
-      <div class="mb-3">
+    <div class="mb-3">
         <label for="placa" class="form-label">Płaca (zł/h)</label>
         <input type="number" step="0.01" name="placa" id="placa" class="form-control" value="{{ old('placa', $instruktor->placa) }}" required>
-      </div>
+    </div>
 
-      <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
-      <a href="{{ url('instruktorzy') }}" class="btn btn-secondary ms-2">Anuluj</a>
-    </form>
-  </div>
+    <div class="mb-3">
+        <label for="zdjecie" class="form-label">Nowe zdjęcie (opcjonalne):</label>
+        <input type="file" name="zdjecie" id="zdjecie" class="form-control">
+    </div>
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" name="usun_zdjecie" id="usun_zdjecie" value="1" class="form-check-input">
+        <label for="usun_zdjecie" class="form-check-label">Usuń obecne zdjęcie</label>
+    </div>
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Zapisz</button>
+    </div>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

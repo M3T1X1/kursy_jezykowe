@@ -76,7 +76,19 @@
         background: transparent !important;
         box-shadow: none !important;
     }
-
+    th, td {
+            text-align: center;          /* Wyśrodkowanie poziome */
+            vertical-align: middle;      /* Wyśrodkowanie pionowe */
+            padding: 8px;
+        }
+    img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 50%;
+        display: inline-block;
+        vertical-align: middle;      /* Ważne dla obrazka */
+    }
   </style>
 </head>
 <body>
@@ -152,17 +164,12 @@
     </div>
 </div>
 
-
-
-
-
-  </div>
-
   <!-- Tabela instruktorów -->
   <div class="table-responsive bg-white">
     <table class="table table-hover mb-0" id="instruktorzyTable">
       <thead>
         <tr>
+          <th>Zdjęcie</th>
           <th>Imię</th>
           <th>Nazwisko</th>
           <th>Email</th>
@@ -175,6 +182,13 @@
       <tbody>
         @foreach ($instruktorzy as $instruktor)
           <tr>
+            <td style="text-align: center; vertical-align: middle; padding: 8px;">
+                 @if($instruktor->adres_zdjecia && file_exists(public_path($instruktor->adres_zdjecia)))
+            <img src="{{ asset($instruktor->adres_zdjecia) }}" alt="Zdjęcie instruktora" style="width:50px; height:50px; border-radius:50%;">
+                @else
+                <img src="{{ asset('img/ZdjeciaInstruktorow/brak.png') }}" alt="Brak zdjęcia" style="width:50px; height:50px; border-radius:50%;">
+                @endif
+            </td>
             <td>{{ $instruktor->imie }}</td>
             <td>{{ $instruktor->nazwisko }}</td>
             <td>{{ $instruktor->email }}</td>
