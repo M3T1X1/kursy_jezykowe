@@ -54,8 +54,9 @@ class ZnizkaController extends Controller
     }
 
     // Usuń zniżkę
-    public function destroy(Znizka $znizka)
+    public function destroy($id)
     {
+        $znizka = Znizka::where('id_znizki', $id)->firstOrFail();
         $znizka->delete();
 
         return redirect()->route('znizki.index')->with('success', 'Zniżka została usunięta.');
