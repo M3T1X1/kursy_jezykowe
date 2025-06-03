@@ -207,7 +207,7 @@
                   </a>
                 </td>
                 <td>{{ $transaction->data_kursu }}</td>
-                <td>{{ $transaction->instruktor }}</td>
+                <td>{{ $transaction->kurs->instructor->name ?? 'Brak instruktora' }}</td>
                 <td>{{ $transaction->cena }}</td>
                 <td>
                   <span class="badge
@@ -227,7 +227,7 @@
                     data-email="{{ $transaction->email }}"
                     data-kurs="{{ $transaction->kurs }}"
                     data-datakursu="{{ $transaction->data_kursu }}"
-                    data-instruktor="{{ $transaction->instruktor }}"
+                    data-instruktor="{{ $transaction->instructor }}"
                     data-cena="{{ $transaction->cena }}"
                     data-status="{{ $transaction->status }}"
                     data-data="{{ $transaction->data_transakcji }}"

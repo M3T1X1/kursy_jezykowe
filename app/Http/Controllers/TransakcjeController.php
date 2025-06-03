@@ -8,7 +8,7 @@ class TransakcjeController extends Controller
     public function index()
     {
         // Pobierz transakcje wraz z klientem, kursem i instruktorem
-        $transactions = Transakcja::with(['klient', 'kurs.instruktor'])->get();
+        $transactions = Transakcja::with(['klient', 'kurs.instructor'])->get();
 
         // Mapujemy dane, by pasowały do widoku
         $data = $transactions->map(function ($t) {
@@ -18,7 +18,7 @@ class TransakcjeController extends Controller
                 'kurs' => $t->kurs->jezyk . ' ' . $t->kurs->poziom,
                 'kurs_id' => $t->kurs->id_kursu,
                 'data_kursu' => \Carbon\Carbon::parse($t->kurs->data_rozpoczecia)->format('Y-m-d'),
-                'instruktor' => $t->kurs->instruktor ? ($t->kurs->instruktor->imie . ' ' . $t->kurs->instruktor->nazwisko) : '-',
+                'instructor' => $t->kurs->instructor ? ($t->kurs->instructor->imie . ' ' . $t->kurs->instructor->nazwisko) : '-',
                 'cena' => number_format($t->cena_ostateczna, 2, ',', ' '),
                 'status' => $t->status,
                 'data_transakcji' => \Carbon\Carbon::parse($t->data)->format('Y-m-d'),
