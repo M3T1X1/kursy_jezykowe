@@ -38,8 +38,13 @@ Route::post('/rezerwacja', [ReservationController::class, 'store'])->name('rezer
 
 
 // Instruktorzy (publiczny widok)
-Route::get('/instruktorzy', [InstruktorzyController::class, 'index'])->name('instruktorzy.index');
-Route::get('/instruktorzy/{id}', [InstruktorzyController::class, 'show'])->name('instruktorzy.show');
+
+Route::get('instruktorzy', [InstruktorzyController::class, 'index'])->name('instruktorzy.instruktorzy');
+Route::get('instruktorzy/create', [InstruktorzyController::class, 'create']);
+Route::post('instruktorzy/store', [InstruktorzyController::class, 'store']);
+Route::get('instruktorzy/edit/{id}', [InstruktorzyController::class, 'edit']);
+Route::put('instruktorzy/update/{id}', [InstruktorzyController::class, 'update'])->name('instruktorzy.update');
+Route::delete('instruktorzy/delete/{id}', [InstruktorzyController::class, 'destroy']);
 
 // Login
 Route::get('/login', [LoginController::class, 'showForm'])->name('login');
