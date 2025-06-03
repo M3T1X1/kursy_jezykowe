@@ -52,7 +52,6 @@
         <option value="Początkujący" {{ $currentLevel == 'Początkujący' ? 'selected' : '' }}>Początkujący</option>
         <option value="Średniozaawansowany" {{ $currentLevel == 'Średniozaawansowany' ? 'selected' : '' }}>Średniozaawansowany</option>
         <option value="Zaawansowany" {{ $currentLevel == 'Zaawansowany' ? 'selected' : '' }}>Zaawansowany</option>
-        <option value="Ekspert" {{ $currentLevel == 'Ekspert' ? 'selected' : '' }}>Ekspert</option>
     </select>
     </div>
 

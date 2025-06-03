@@ -136,7 +136,6 @@
             <option value="Początkujący" {{ old('poziom') == 'Początkujący' ? 'selected' : '' }}>Początkujący</option>
             <option value="Średniozaawansowany" {{ old('poziom') == 'Średniozaawansowany' ? 'selected' : '' }}>Średniozaawansowany</option>
             <option value="Zaawansowany" {{ old('poziom') == 'Zaawansowany' ? 'selected' : '' }}>Zaawansowany</option>
-            <option value="Ekspert" {{ old('poziom') == 'Ekspert' ? 'selected' : '' }}>Ekspert</option>
         </select>
     </div>
 
