@@ -25,6 +25,15 @@ class LoginController extends Controller
             'password' => $credentials['password'],
         ])) {
             $request->session()->regenerate();
+
+            //Poniżej fragment dla automatycznych zniżek
+            //Zniżki są dodawane w momencie logowania przez klienta
+
+            $user = Auth::user();
+            if ($user instanceof \App\Models\Klient) {
+                $user->updateAutomaticDiscounts();
+            }
+
             return redirect()->intended('/home'); // lub inna strona po zalogowaniu
         }
 

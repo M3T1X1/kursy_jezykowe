@@ -22,7 +22,7 @@ class Klient extends Authenticatable
 
     public function znizki()
     {
-        return $this->belongsToMany(Znizka::class, 'klient_znizka', 'id_klienta', 'id_znizki')->withTimestamps();
+        return $this->belongsToMany(Znizka::class, 'klienci_znizki', 'id_klienta', 'id_znizki')->withTimestamps();
     }
 
     public function updateAutomaticDiscounts()
