@@ -69,6 +69,14 @@
       .main-content { margin-left: 0; }
       .sidebar { position: static; width: 100%; min-height: unset; }
     }
+
+    .table-responsive {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
   </style>
 </head>
 <body>
@@ -104,66 +112,142 @@
   </div>
 
   <div class="main-content">
-    <h2 class="admin-title mb-4">Instruktorzy</h2>
+  <h2 class="admin-title mb-4">Instruktorzy</h2>
 
-    <!-- Filtry -->
-    <div class="row mb-3 filter-row">
-      <div class="col-md-4">
-        <input type="text" class="form-control filter-instruktorzy" placeholder="Imię lub nazwisko" data-column="0" />
-      </div>
-      <div class="col-md-4">
-        <input type="text" class="form-control filter-instruktorzy" placeholder="Email" data-column="1" />
-      </div>
-      <div class="col-md-4">
-        <select class="form-select filter-instruktorzy" data-column="2">
-          <option value="">Specjalizacja</option>
-          <option>Angielski</option>
-          <option>Niemiecki</option>
-          <option>Hiszpański</option>
-          <!-- Dodaj więcej specjalizacji jeśli trzeba -->
-        </select>
-      </div>
-    </div>
-
-    <!-- Tabela instruktorów -->
-    <div class="table-responsive bg-white">
-      <table class="table table-hover mb-0" id="instruktorzyTable">
-        <thead>
-          <tr>
-            <th>Imię i nazwisko</th>
-            <th>Email</th>
-            <th>Specjalizacja</th>
-            <th>Telefon</th>
-            <th>Akcje</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($instruktorzy as $instruktor)
-            <tr>
-              <td>{{ $instruktor->name }}</td>
-              <td>{{ $instruktor->email }}</td>
-              <td>{{ $instruktor->specialization }}</td>
-              <td>{{ $instruktor->phone }}</td>
-              <td>
-                <a href="{{ url('instruktorzy/edit/' . $instruktor->id) }}" class="btn btn-sm btn-outline-primary btn-action">
-                  <i class="bi bi-pencil"></i>
-                </a>
-                <form action="{{ url('instruktorzy/delete/' . $instruktor->id) }}" method="POST" class="d-inline">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-sm btn-outline-danger btn-action" onclick="return confirm('Czy na pewno chcesz usunąć tego instruktora?')">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </form>
-              </td>
-            </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
+  <div class="d-flex justify-content-end mb-3">
+    <a href="{{ url('instruktorzy/create') }}" class="btn btn-primary">
+      Dodaj Instruktora
+    </a>
   </div>
 
-  <!-- Bootstrap JS (opcjonalnie, jeśli potrzebujesz np. modalów) -->
+  <!-- Filtry -->
+  <div class="row align-items-end mb-3 gx-2 filter-row">
+  <div class="col-md-2 mb-2">
+    <input type="text" class="form-control filter-instruktorzy" placeholder="Imię" data-column="0" />
+  </div>
+  <div class="col-md-2 mb-2">
+    <input type="text" class="form-control filter-instruktorzy" placeholder="Nazwisko" data-column="1" />
+  </div>
+  <div class="col-md-2 mb-2">
+    <input type="text" class="form-control filter-instruktorzy" placeholder="Email" data-column="2" />
+  </div>
+  <div class="col-md-2 mb-2">
+    <select class="form-select filter-instruktorzy" data-column="3">
+      <option value="">Specjalizacja</option>
+      <option>Angielski</option>
+      <option>Niemiecki</option>
+      <option>Hiszpański</option>
+    </select>
+  </div>
+  <div class="col-md-3 mb-2">
+    <select class="form-select filter-instruktorzy" data-column="4">
+      <option value="">Poziom</option>
+      <option>Beginner</option>
+      <option>Średniozaawansowany</option>
+      <option>Zaawansowany</option>
+    </select>
+  </div>
+    <div class="col-md-2 mb-2">
+        <!-- Puste -->
+    </div>
+</div>
+
+
+
+
+
+  </div>
+
+  <!-- Tabela instruktorów -->
+  <div class="table-responsive bg-white">
+    <table class="table table-hover mb-0" id="instruktorzyTable">
+      <thead>
+        <tr>
+          <th>Imię</th>
+          <th>Nazwisko</th>
+          <th>Email</th>
+          <th>Specjalizacja</th>
+          <th>Poziom</th>
+          <th>Płaca</th>
+          <th>Akcje</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach ($instruktorzy as $instruktor)
+          <tr>
+            <td>{{ $instruktor->imie }}</td>
+            <td>{{ $instruktor->nazwisko }}</td>
+            <td>{{ $instruktor->email }}</td>
+            <td>{{ $instruktor->jezyk }}</td>
+            <td>{{ $instruktor->poziom }}</td>
+            <td>{{ $instruktor->placa }} zł/h</td>
+            <td>
+              <a href="{{ url('instruktorzy/edit/' . $instruktor->id) }}" class="btn btn-sm btn-outline-primary btn-action" title="Edytuj">
+                <i class="bi bi-pencil"></i>
+              </a>
+              <form action="{{ url('instruktorzy/delete/' . $instruktor->id) }}" method="POST" class="d-inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-outline-danger btn-action" onclick="return confirm('Czy na pewno chcesz usunąć tego instruktora?')" title="Usuń">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+        @endforeach
+      </tbody>
+    </table>
+        <div class="mt-3">
+           {{ $instruktorzy->links('pagination::simple-bootstrap-5') }}
+
+            <div class="mt-2 text-muted">
+            Strona {{ $instruktorzy->currentPage() }} z {{ $instruktorzy->lastPage() }}
+            </div>
+        </div>
+  </div>
+</div>
+
+
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Filter Script -->
+  <script>
+    document.querySelectorAll('.filter-instruktorzy').forEach(input => {
+      // for text inputs: listen to 'input'
+      if (input.tagName.toLowerCase() === 'input') {
+        input.addEventListener('input', filterTable);
+      }
+      // for selects: listen to 'change'
+      else if (input.tagName.toLowerCase() === 'select') {
+        input.addEventListener('change', filterTable);
+      }
+    });
+
+    function filterTable() {
+      const filters = {};
+      document.querySelectorAll('.filter-instruktorzy').forEach(f => {
+        filters[f.dataset.column] = f.value.toLowerCase().trim();
+      });
+
+      const rows = document.querySelectorAll('#instruktorzyTable tbody tr');
+
+      rows.forEach(row => {
+        let show = true;
+
+        for (const col in filters) {
+          if (filters[col]) {
+            const cellText = row.cells[col].textContent.toLowerCase();
+            if (!cellText.includes(filters[col])) {
+              show = false;
+              break;
+            }
+          }
+        }
+
+        row.style.display = show ? '' : 'none';
+      });
+    }
+  </script>
 </body>
 </html>
