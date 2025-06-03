@@ -51,7 +51,7 @@
     <div class="row g-4">
       <div class="col-md-4">
         <div class="card course-card">
-          <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Angielski">
+          <img src="{{ asset('img/UKFlag.png') }}" alt="UK Flag" style="width: 414px; height: 250px; object-fit: cover;">
           <div class="card-body">
             <h5><a href="course-detail.html?id=1" class="course-title">Angielski - podstawowy</a></h5>
             <p class="card-text">
@@ -65,7 +65,7 @@
       </div>
       <div class="col-md-4">
         <div class="card course-card">
-          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Hiszpański">
+          <img src="{{ asset('img/SpainFlag.png') }}" alt="SpainFlag" style="width: 414px; height: 250px; object-fit: cover;">
           <div class="card-body">
             <h5><a href="course-detail.html?id=2" class="course-title">Hiszpański - średniozaawansowany</a></h5>
             <p class="card-text">
@@ -79,7 +79,7 @@
       </div>
       <div class="col-md-4">
         <div class="card course-card">
-          <img src="https://images.unsplash.com/photo-1498855926480-d98e83099315?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Francuski">
+          <img src="{{ asset('img/FranceFlag.webp') }}" alt="FrenchFlag" style="width: 414px; height: 250px; object-fit: cover;">
           <div class="card-body">
             <h5><a href="course-detail.html?id=3" class="course-title">Francuski - początkujący</a></h5>
             <p class="card-text">
