@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Reservation;
 use App\Models\Course;
+use Illuminate\Support\Carbon;
 
 class ReservationController extends Controller
 {
@@ -26,6 +27,10 @@ class ReservationController extends Controller
     try {
         \DB::transaction(function () use ($validated) {
             $course = Course::lockForUpdate()->findOrFail($validated['course']);
+
+            if (now()->between($course->data_rozpoczecia, $course->data_zakonczenia)) {
+                throw new \Exception('Nie można zapisać się na kurs, który już się rozpoczął.');
+            }
 
             if ($course->reservations()->count() >= $course->liczba_miejsc) {
                 throw new \Exception('Brak wolnych miejsc na ten kurs.');
