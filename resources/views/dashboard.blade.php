@@ -136,7 +136,7 @@
       <a href="{{ route('kursy.index') }}" class="nav-link">
         <i class="bi bi-book"></i> Kursy
       </a>
-      <a href="#" class="nav-link">
+      <a href="{{ route('instruktorzy.instruktorzy') }}" class="nav-link">
         <i class="bi bi-person-workspace"></i> Instruktorzy
       </a>
       <a href="{{ route('klienci.index') }}" class="nav-link">
