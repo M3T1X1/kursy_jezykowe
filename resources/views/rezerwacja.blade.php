@@ -17,62 +17,73 @@
     <img src="https://img.icons8.com/color/96/000000/language.png" class="logo" alt="Logo szkoły" />
     <h2 class="booking-title mb-4 text-center">Rezerwacja kursu językowego</h2>
     @if ($errors->any())
-  <div class="alert alert-danger">
-    <ul class="mb-0">
-      @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-      @endforeach
-    </ul>
-  </div>
-@endif
+      <div class="alert alert-danger">
+        <ul class="mb-0">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    @endif
 
-@if (session('success'))
-  <div class="alert alert-success">
-    {{ session('success') }}
-  </div>
-@endif
+    @if (session('success'))
+      <div class="alert alert-success">
+        {{ session('success') }}
+      </div>
+    @endif
+
     <form method="POST" action="{{ route('rezerwacja.submit') }}">
-  @csrf
+      @csrf
 
-  <h5 class="mb-3">Dane uczestnika</h5>
-  <div class="mb-3">
-    <label for="name" class="form-label">Imię i nazwisko:</label>
-    <input type="text" class="form-control" id="name" name="name" required>
-  </div>
-  <div class="mb-3">
-    <label for="email" class="form-label">Email:</label>
-    <input type="email" class="form-control" id="email" name="email" required>
-  </div>
-  <div class="mb-3">
-    <label for="phone" class="form-label">Telefon:</label>
-    <input type="tel" class="form-control" id="phone" name="phone" required>
-  </div>
+      <h5 class="mb-3">Dane uczestnika</h5>
+      <div class="mb-3">
+        <label for="imie" class="form-label">Imię:</label>
+        <input type="text" class="form-control" id="imie" name="imie" required value="{{ old('imie') }}">
+      </div>
+      <div class="mb-3">
+        <label for="nazwisko" class="form-label">Nazwisko:</label>
+        <input type="text" class="form-control" id="nazwisko" name="nazwisko" required value="{{ old('nazwisko') }}">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" class="form-control" id="email" name="email" required value="{{ old('email') }}">
+      </div>
+      <div class="mb-3">
+        <label for="nr_telefonu" class="form-label">Telefon:</label>
+        <input type="tel" class="form-control" id="nr_telefonu" name="nr_telefonu" required value="{{ old('nr_telefonu') }}">
+      </div>
 
-  <h5 class="mb-3 mt-4">Szczegóły kursu</h5>
+      <h5 class="mb-3 mt-4">Szczegóły kursu</h5>
 
-  @php
-    $selectedCourse = $courses->firstWhere('id_kursu', request('course')) ?? $courses->first();
-  @endphp
+      @php
+        // $selectedCourse jest przekazywany z kontrolera
+      @endphp
 
-  <div class="mb-3">
-    <label class="form-label">Język:</label>
-    <p>{{ $selectedCourse->jezyk }}</p>
-  </div>
+      @if($selectedCourse)
+        <div class="mb-3">
+          <label class="form-label">Język:</label>
+          <p>{{ $selectedCourse->jezyk }}</p>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Poziom zaawansowania:</label>
+          <p>{{ $selectedCourse->poziom }}</p>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Data rozpoczęcia kursu:</label>
+          <p>{{ \Illuminate\Support\Carbon::parse($selectedCourse->data_rozpoczecia)->format('Y-m-d') }}</p>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Cena bazowa:</label>
+          <p>{{ number_format($selectedCourse->cena, 2, ',', ' ') }} zł</p>
+        </div>
+        <input type="hidden" name="course" value="{{ $selectedCourse->id_kursu }}">
+        <input type="hidden" name="base_price" value="{{ $selectedCourse->cena }}">
+      @else
+        <div class="alert alert-warning">Brak dostępnych kursów do rezerwacji.</div>
+      @endif
 
-  <div class="mb-3">
-    <label class="form-label">Poziom zaawansowania:</label>
-    <p>{{ $selectedCourse->poziom }}</p>
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Data rozpoczęcia kursu:</label>
-    <p>{{ \Illuminate\Support\Carbon::parse($selectedCourse->data_rozpoczecia)->format('Y-m-d') }}</p>
-  </div>
-
-  <input type="hidden" name="course" value="{{ $selectedCourse->id_kursu }}">
-
-  <button type="submit" class="btn btn-success w-100 mt-4">Zarezerwuj miejsce</button>
-</form>
+      <button type="submit" class="btn btn-success w-100 mt-4">Zarezerwuj miejsce</button>
+    </form>
   </div>
 </body>
 </html>

@@ -95,7 +95,7 @@
                 type="email"
                 id="email"
                 name="email"
-                value="{{ old('email') }}"
+                value="{{ old('email', request('email'))}}" 
                 required
             >
         </div>
