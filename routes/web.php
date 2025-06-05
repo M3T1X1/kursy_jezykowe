@@ -15,21 +15,16 @@ use App\Http\Controllers\RejestracjaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\InstruktorzyController;
 use App\Http\Controllers\ReservationController;
-
+use App\Models\Instruktor;
+use App\Http\Controllers\HomeController;
 
 // Test połączenia z bazą
 Route::get('/test-db', function () {
     return DB::select('SELECT * FROM instruktorzy LIMIT 1');
 });
 
-// Strona główna
-Route::get('/', function () {
-    return view('home');
-});
-Route::get('/home', function () {
-    return view('home');
-});
-
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 //rezerwacja
 Route::get('/rezerwacja', [ReservationController::class, 'create'])->name('rezerwacja.create');

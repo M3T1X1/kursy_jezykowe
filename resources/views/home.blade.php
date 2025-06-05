@@ -17,6 +17,10 @@
     .instructor-name { color: #2c3e50; text-decoration: none; font-weight: 600; }
     .course-title { color: #2c3e50; text-decoration: none; font-weight: 600; }
     .instructor-name:hover, .course-title:hover { color: #3498db; }
+    .instruktorzy-scroll::-webkit-scrollbar {
+        height: 8px;
+    }
+
   </style>
 </head>
 <body>
@@ -24,19 +28,31 @@
     <div class="container">
         <a class="navbar-brand" href="#">Szkoła Językowa</a>
         @if(auth()->check())
-        <span class="navbar-text ms-3">
-            Zalogowany jako: <strong>{{ auth()->user()->imie }} {{ auth()->user()->nazwisko }}</strong>
-        </span>
-        <form method="POST" action="{{ route('logout') }}" style="display:inline; margin-left: 15px;">
-            @csrf
-            <button type="submit" class="btn btn-outline-danger btn-sm">Wyloguj się</button>
-        </form>
-        @else
-        <div class="btn-group btn-group-auth">
-            <a href="{{ route('login') }}" class="btn btn-primary">Zaloguj się</a>
-            <a href="{{ route('register') }}" class="btn btn-secondary">Zarejestruj się</a>
-        </div>
-        @endif
+            <span class="navbar-text ms-3 me-3">
+                Zalogowany jako: <strong>{{ auth()->user()->imie }} {{ auth()->user()->nazwisko }}</strong>
+            </span>
+
+            <div class="d-inline-flex align-items-center" style="gap: 10px;">
+                @if(auth()->user()->role === 'admin')
+                <a href="{{ route('admin.index') }}" class="btn btn-outline-primary btn-sm">
+                    Dashboard
+                </a>
+                @endif
+
+                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                @csrf
+                <button type="submit" class="btn btn-outline-danger btn-sm">Wyloguj się</button>
+                </form>
+            </div>
+            @else
+            <div class="btn-group btn-group-auth">
+                <a href="{{ route('login') }}" class="btn btn-primary">Zaloguj się</a>
+                <a href="{{ route('register') }}" class="btn btn-secondary">Zarejestruj się</a>
+            </div>
+            @endif
+
+
+
     </div>
     </nav>
   <section class="hero text-center mb-5">
@@ -93,46 +109,46 @@
       </div>
     </div>
   </div>
-  <div class="text-center mb-5">
-  <a href="{{ route('oferta') }}" class="btn btn-primary">Zobacz wszystkie kursy</a>
-  </div>
-  <div class="container mb-5">
-    <h2 class="mb-4">Nasi instruktorzy</h2>
-    <div class="row text-center">
-      <div class="col-md-3 instructor-card mb-4">
-        <a href="instructor-detail.html?id=1">
-          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Jan Kowalski" class="mb-3">
-          <h5 class="instructor-name">Jan Kowalski</h5>
-        </a>
-        <p>Angielski</p>
-        <a href="instructor-detail.html?id=1" class="btn btn-sm btn-outline-primary">Profil instruktora</a>
-      </div>
-      <div class="col-md-3 instructor-card mb-4">
-        <a href="instructor-detail.html?id=2">
-          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria Nowak" class="mb-3">
-          <h5 class="instructor-name">Maria Nowak</h5>
-        </a>
-        <p>Hiszpański</p>
-        <a href="instructor-detail.html?id=2" class="btn btn-sm btn-outline-primary">Profil instruktora</a>
-      </div>
-      <div class="col-md-3 instructor-card mb-4">
-        <a href="instructor-detail.html?id=3">
-          <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Piotr Wiśniewski" class="mb-3">
-          <h5 class="instructor-name">Piotr Wiśniewski</h5>
-        </a>
-        <p>Francuski</p>
-        <a href="instructor-detail.html?id=3" class="btn btn-sm btn-outline-primary">Profil instruktora</a>
-      </div>
-      <div class="col-md-3 instructor-card mb-4">
-        <a href="instructor-detail.html?id=4">
-          <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Anna Kowalczyk" class="mb-3">
-          <h5 class="instructor-name">Anna Kowalczyk</h5>
-        </a>
-        <p>Niemiecki</p>
-        <a href="instructor-detail.html?id=4" class="btn btn-sm btn-outline-primary">Profil instruktora</a>
-      </div>
-    </div>
-  </div>
+  <div class="container my-5">
+    <h3 class="text-center mb-4">Poznaj naszych instruktorów</h3>
+
+    @if($instruktorzy->count() > 0)
+        <div class="py-3">
+            <h4 class="text-center mb-4"></h4>
+
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                @foreach($instruktorzy as $instruktor)
+                    <div style="width: 220px;">
+                        <div class="card h-100 text-center">
+                            <div style="padding-top: 15px;">
+                                <img
+                                    src="{{ $instruktor->zdjecie_url }}"
+                                    alt="Zdjęcie instruktora {{ $instruktor->imie }} {{ $instruktor->nazwisko }}"
+                                    class="rounded-circle mx-auto"
+                                    style="width: 120px; height: 120px; object-fit: cover;"
+                                >
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $instruktor->imie }} {{ $instruktor->nazwisko }}</h5>
+                                <p class="card-text mb-1"><strong>Język:</strong> {{ $instruktor->jezyk }}</p>
+                                <p class="card-text"><strong>Poziom:</strong> {{ $instruktor->poziom }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @else
+        <p class="text-center">Brak dostępnych instruktorów.</p>
+    @endif
+</div>
+
+
+
+
+
+
+
   <div class="container mb-5">
     <h2 class="mb-4">Opinie kursantów</h2>
     <div class="row">

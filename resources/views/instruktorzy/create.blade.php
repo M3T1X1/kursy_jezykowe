@@ -147,7 +147,7 @@
 
       <div class="mb-3">
         <label for="zdjecie" class="form-label">Zdjęcie profilowe</label>
-        <input type="file" class="form-control" id="zdjecie" name="zdjecie" accept="image/*" required />
+        <input type="file" class="form-control" id="zdjecie" name="zdjecie" accept="image/*" />
       </div>
 
       <button type="submit" class="btn btn-primary float-end">Dodaj Instruktora</button>
