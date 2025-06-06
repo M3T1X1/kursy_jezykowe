@@ -102,9 +102,19 @@ class ReservationController extends Controller
             });
 
             // Przekierowanie do rejestracji z przekazaniem e-maila
-            return redirect()
-                ->route('home', ['email' => $validated['email']])
-                ->with('success', 'Rezerwacja została zapisana!');
+         
+
+           $emailExists = Klient::where('email', $validated['email'])->exists();
+
+            if ($emailExists) {
+                return redirect()
+                    ->route('home', ['email' => $validated['email']])
+                    ->with('success', 'Rezerwacja została zapisana!');
+            } else {
+                return redirect()
+                    ->route('register.form', ['email' => $validated['email']])
+                    ->with('success', 'Rezerwacja została zapisana. Proszę teraz się zarejestrować!');
+            }
         } catch (\Exception $e) {
             return back()
                 ->withErrors(['course' => $e->getMessage()])
