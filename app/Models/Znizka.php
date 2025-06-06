@@ -9,10 +9,16 @@ class Znizka extends Model
     protected $table = 'znizki';
     protected $primaryKey = 'id_znizki';
     public $timestamps = true;
+    
 
     protected $fillable = [
         'nazwa_znizki',
         'wartosc',
         'opis',
     ];
+
+       public function getRouteKeyName()
+    {
+        return 'id_znizki';
+    }
 }

@@ -36,7 +36,7 @@ class ZnizkaController extends Controller
     // Pokaż formularz edycji zniżki
     public function edit(Znizka $znizka)
     {
-        return view('znizki.edit', compact('znizka'));
+        return view('znizki.edytujZnizke', compact('znizka'));
     }
 
     // Zaktualizuj zniżkę w bazie
