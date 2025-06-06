@@ -181,6 +181,13 @@
             <option>Oczekuje</option>
             <option>Anulowane</option>
           </select>
+
+          <form action="{{ route('transakcje.anuluj_przeterminowane') }}" method="GET" onsubmit="return confirm('Czy na pewno chcesz anulować przeterminowane transakcje i usunąć powiązane rezerwacje?');" class="mt-3">
+            <button type="submit" class="btn btn-danger w-100">
+              <i class="bi bi-ban"></i> Anuluj przeterminowane transakcje
+            </button>
+          </form>
+
         </div>
       </div>
 
@@ -196,7 +203,6 @@
               <th>Cena ostateczna</th>
               <th>Status</th>
               <th>Data transakcji</th>
-              <th>Akcje</th>
             </tr>
           </thead>
           <tbody>
@@ -205,9 +211,7 @@
                 <td>{{ $transaction->kursant }}</td>
                 <td>{{ $transaction->email }}</td>
                 <td>
-                  <a href="{{ url('course-detail?id=' . $transaction->kurs_id) }}" class="course-title">
-                    {{ $transaction->kurs }}
-                  </a>
+                  {{ $transaction->kurs }}
                 </td>
                 <td>{{ $transaction->data_kursu }}</td>
                 <td>{{ $transaction->kurs->instructor->name ?? 'Brak instruktora' }}</td>
@@ -223,21 +227,6 @@
                   </span>
                 </td>
                 <td>{{ $transaction->data_transakcji }}</td>
-                <td>
-                  <button
-                    class="btn btn-sm btn-outline-info btn-action view-transaction"
-                    data-kursant="{{ $transaction->kursant }}"
-                    data-email="{{ $transaction->email }}"
-                    data-kurs="{{ $transaction->kurs }}"
-                    data-datakursu="{{ $transaction->data_kursu }}"
-                    data-instruktor="{{ $transaction->instructor }}"
-                    data-cena="{{ $transaction->cena }}"
-                    data-status="{{ $transaction->status }}"
-                    data-data="{{ $transaction->data_transakcji }}"
-                  >
-                    <i class="bi bi-eye"></i>
-                  </button>
-                </td>
               </tr>
             @endforeach
           </tbody>
