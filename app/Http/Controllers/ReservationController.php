@@ -44,11 +44,13 @@ class ReservationController extends Controller
         try {
             DB::transaction(function () use ($validated) {
 
-                $czyIstnieje = Klient::where('email', $validated['email'])->first();
+               $existingReservation = Reservation::where('email', $validated['email'])
+               ->where('course_id', $validated['course'])
+               ->exists();
 
-                if($czyIstnieje)
+                if ($existingReservation) 
                 {
-                    throw new \Exception('Klient o tym emailu już jest zarezerwowany na ten kurs.');
+                    throw new \Exception('Ten e-mail jest już zapisany na wybrany kurs.');
                 }
 
                 $course = Course::lockForUpdate()->findOrFail($validated['course']);
