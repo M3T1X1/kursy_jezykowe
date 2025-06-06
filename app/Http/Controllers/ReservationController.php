@@ -33,13 +33,18 @@ class ReservationController extends Controller
     // Zapisz rezerwację i utwórz transakcję, a potem przekieruj do rejestracji
     public function store(Request $request)
     {
+        $wiadomosci = 
+        [
+            'nr_telefonu.regex' => "Numer telefonu musi składać się z 9 cyfr (tylko i wyłącznie)!"
+        ];
+
         $validated = $request->validate([
             'imie' => 'required|string|max:255',
             'nazwisko' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'nr_telefonu' => 'required|string|max:20',
+            'nr_telefonu' => ['required', 'regex:/^[0-9]{9}$/'],
             'course' => 'required|exists:kursy,id_kursu',
-        ]);
+        ], $wiadomosci);
 
         try {
             DB::transaction(function () use ($validated) {
