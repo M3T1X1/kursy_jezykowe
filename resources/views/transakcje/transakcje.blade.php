@@ -6,6 +6,29 @@
   <title>Transakcje</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+  $(document).ready(function () {
+    $(".filter-transakcje").on("input change", function () {
+      const $filters = $(".filter-transakcje");
+      $("#transakcjeTable tbody tr").each(function () {
+        let showRow = true;
+        $(this).find("td").each(function (index) {
+          const input = $filters.filter(`[data-column='${index}']`);
+          if (input.length) {
+            const filterVal = input.val().toLowerCase().trim();
+            const cellText = $(this).text().toLowerCase().trim();
+            if (filterVal && !cellText.includes(filterVal)) {
+              showRow = false;
+            }
+          }
+        });
+        $(this).toggle(showRow);
+      });
+    });
+  });
+</script>
    <style>
     body {
       background: #f4f6fa;
