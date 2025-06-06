@@ -99,13 +99,14 @@ class ReservationController extends Controller
 
                 $discountedPrice = $course->cena * (1 - $discountValue / 100);
 
-                Transakcja::create([
-                    'id_kursu' => $course->id_kursu,
-                    'id_klienta' => $client->id_klienta,
-                    'cena_ostateczna' => $discountedPrice,
-                    'status' => 'Oczekuje',
-                    'data' => now(),
-                ]);
+              $transakcja = Transakcja::create([
+                'id_kursu' => $course->id_kursu,
+                'id_klienta' => $client->id_klienta,
+                'cena_ostateczna' => $discountedPrice,
+                'status' => 'Oczekuje',
+                'data' => now(),
+                'reservation_id' => $reservation->id, 
+            ]);
             });
 
             // Przekierowanie do rejestracji z przekazaniem e-maila

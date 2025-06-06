@@ -84,4 +84,8 @@ Route::get('/oferta', [PublicCourseController::class, 'index'])->name('oferta');
     Route::get('/admin/transakcje', [AdminController::class, 'showTransactions'])->name('admin.transakcje');
     Route::get('/transakcje', [TransakcjeController::class, 'index'])->name('transakcje');
     Route::resource('znizki', ZnizkaController::class);
+
+    Route::get('/transakcje/anuluj-przeterminowane', [TransakcjeController::class, 'anulujPrzeterminowane'])
+    ->name('transakcje.anuluj_przeterminowane');
+
 });

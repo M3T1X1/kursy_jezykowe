@@ -19,5 +19,10 @@ class Reservation extends Model
         {
             return $this->belongsTo(Course::class, 'course_id', 'id_kursu');
         }
+        
+        public function transakcja()
+        {
+            return $this->hasOne(Transakcja::class, 'reservation_id', 'id');
+        }
 
 }
