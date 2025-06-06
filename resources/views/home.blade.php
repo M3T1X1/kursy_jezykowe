@@ -145,10 +145,3 @@
 
 
 
-
-
-
-
-  <div class="container mb-5">
-    <h2 class="mb-4">Opinie kursantów</h2>
-    <div class="row">
