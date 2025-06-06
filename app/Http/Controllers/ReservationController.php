@@ -33,16 +33,31 @@ class ReservationController extends Controller
     // Zapisz rezerwację i utwórz transakcję, a potem przekieruj do rejestracji
     public function store(Request $request)
     {
+        $wiadomosci = 
+        [
+            'nr_telefonu.regex' => "Numer telefonu musi składać się z 9 cyfr (tylko i wyłącznie)!"
+        ];
+
         $validated = $request->validate([
             'imie' => 'required|string|max:255',
             'nazwisko' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'nr_telefonu' => 'required|string|max:20',
+            'nr_telefonu' => ['required', 'regex:/^[0-9]{9}$/'],
             'course' => 'required|exists:kursy,id_kursu',
-        ]);
+        ], $wiadomosci);
 
         try {
             DB::transaction(function () use ($validated) {
+
+               $existingReservation = Reservation::where('email', $validated['email'])
+               ->where('course_id', $validated['course'])
+               ->exists();
+
+                if ($existingReservation) 
+                {
+                    throw new \Exception('Ten e-mail jest już zapisany na wybrany kurs.');
+                }
+
                 $course = Course::lockForUpdate()->findOrFail($validated['course']);
 
                 if (now()->between($course->data_rozpoczecia, $course->data_zakonczenia)) {
@@ -52,6 +67,7 @@ class ReservationController extends Controller
                 if (method_exists($course, 'reservations') && $course->reservations()->count() >= $course->liczba_miejsc) {
                     throw new \Exception('Brak wolnych miejsc na ten kurs.');
                 }
+
 
                 $client = Klient::firstOrCreate(
                     ['email' => $validated['email']],
@@ -86,9 +102,19 @@ class ReservationController extends Controller
             });
 
             // Przekierowanie do rejestracji z przekazaniem e-maila
-            return redirect()
-                ->route('register.form', ['email' => $validated['email']])
-                ->with('success', 'Rezerwacja została zapisana! Załóż konto, aby dokończyć proces.');
+         
+
+           $emailExists = Klient::where('email', $validated['email'])->exists();
+
+            if ($emailExists) {
+                return redirect()
+                    ->route('home', ['email' => $validated['email']])
+                    ->with('success', 'Rezerwacja została zapisana!');
+            } else {
+                return redirect()
+                    ->route('register.form', ['email' => $validated['email']])
+                    ->with('success', 'Rezerwacja została zapisana. Proszę teraz się zarejestrować!');
+            }
         } catch (\Exception $e) {
             return back()
                 ->withErrors(['course' => $e->getMessage()])
