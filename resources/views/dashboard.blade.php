@@ -190,46 +190,54 @@
           <div class="stat-card">
             <i class="bi bi-tag"></i>
             <h4>{{ $discountsCount }}</h4>
-            <p>Aktywne zniżki</p>
+            <p>Zniżki</p>
           </div>
         </div>
       </div>
-      <h3 class="mb-3">Ostatnie zapisy</h3>
-      <div class="table-responsive bg-white">
-        <table class="table table-hover mb-0">
-          <thead>
-            <tr>
-              <th>Kursant</th>
-              <th>Kurs</th>
-              <th>Data</th>
-              <th>Status</th>
-              <th>Kwota</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach($recentEnrollments as $enrollment)
-              <tr>
-                <td>{{ $enrollment->client_name }}</td>
-                <td>{{ $enrollment->course_name }}</td>
-                <td>{{ $enrollment->date }}</td>
-                <td>
-                  @if($enrollment->status === 'paid')
-                    <span class="badge bg-success">Opłacone</span>
-                  @elseif($enrollment->status === 'pending')
-                    <span class="badge bg-warning text-dark">Oczekuje</span>
-                  @else
-                    <span class="badge bg-secondary">{{ $enrollment->status }}</span>
-                  @endif
-                </td>
-                <td>{{ $enrollment->amount }} PLN</td>
-              </tr>
-            @endforeach
-            @if($recentEnrollments->isEmpty())
-              <tr>
-                <td colspan="5" class="text-center text-muted">Brak danych</td>
-              </tr>
-            @endif
-          </tbody>
+        <h3 class="mb-3">Ostatnie zapisy</h3>
+        <div class="table-responsive bg-white">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Kursant</th>
+                        <th>Email kursanta</th>
+                        <th>Kurs</th>
+                        <th>Data kursu</th>
+                        <th>Instruktor</th>
+                        <th>Cena</th>
+                        <th>Status</th>
+                        <th>Data transakcji</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($recentEnrollments as $enrollment)
+                        <tr>
+                            <td>{{ $enrollment->client_name }}</td>
+                            <td>{{ $enrollment->client_email }}</td>
+                            <td>{{ $enrollment->course_name }}</td>
+                            <td>{{ \Carbon\Carbon::parse($enrollment->course_date)->format('Y-m-d') }}</td>
+                            <td>{{ $enrollment->instructor }}</td>
+                            <td>{{ number_format((float)$enrollment->amount, 2, ',', ' ') }} PLN</td>
+                            <td>
+                                <span class="badge rounded-pill
+                                    @if($enrollment->status == 'Opłacone') bg-success
+                                    @elseif($enrollment->status == 'Oczekuje') bg-warning text-dark
+                                    @else bg-danger
+                                    @endif
+                                ">
+                                    {{ $enrollment->status }}
+                                </span>
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($enrollment->transaction_date)->format('Y-m-d') }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">Brak danych</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
         </table>
       </div>
     </div>
