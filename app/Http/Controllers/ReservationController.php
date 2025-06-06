@@ -68,7 +68,7 @@ class ReservationController extends Controller
                     throw new \Exception('Brak wolnych miejsc na ten kurs.');
                 }
 
-
+                
                 $client = Klient::firstOrCreate(
                     ['email' => $validated['email']],
                     [
@@ -80,7 +80,7 @@ class ReservationController extends Controller
                         'role' => 'klient'
                     ]
                 );
-
+                
                 $reservation = Reservation::create([
                     'imie' => $validated['imie'],
                     'nazwisko' => $validated['nazwisko'],
@@ -90,7 +90,14 @@ class ReservationController extends Controller
                     'base_price' => $course->cena,
                 ]);
 
-                $discountedPrice = $course->cena * 0.9;
+                $activeDiscount = $client->znizki()
+                ->where('active', true)
+                ->orderByDesc('wartosc') // jeśli chcesz wziąć największą zniżkę
+                ->first();
+
+                $discountValue = $activeDiscount ? $activeDiscount->wartosc : 0;
+
+                $discountedPrice = $course->cena * (1 - $discountValue / 100);
 
                 Transakcja::create([
                     'id_kursu' => $course->id_kursu,
