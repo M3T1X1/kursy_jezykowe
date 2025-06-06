@@ -43,6 +43,14 @@ class ReservationController extends Controller
 
         try {
             DB::transaction(function () use ($validated) {
+
+                $czyIstnieje = Klient::where('email', $validated['email'])->first();
+
+                if($czyIstnieje)
+                {
+                    throw new \Exception('Klient o tym emailu już jest zarezerwowany na ten kurs.');
+                }
+
                 $course = Course::lockForUpdate()->findOrFail($validated['course']);
 
                 if (now()->between($course->data_rozpoczecia, $course->data_zakonczenia)) {
@@ -52,6 +60,7 @@ class ReservationController extends Controller
                 if (method_exists($course, 'reservations') && $course->reservations()->count() >= $course->liczba_miejsc) {
                     throw new \Exception('Brak wolnych miejsc na ten kurs.');
                 }
+
 
                 $client = Klient::firstOrCreate(
                     ['email' => $validated['email']],
@@ -87,8 +96,8 @@ class ReservationController extends Controller
 
             // Przekierowanie do rejestracji z przekazaniem e-maila
             return redirect()
-                ->route('register.form', ['email' => $validated['email']])
-                ->with('success', 'Rezerwacja została zapisana! Załóż konto, aby dokończyć proces.');
+                ->route('home', ['email' => $validated['email']])
+                ->with('success', 'Rezerwacja została zapisana!');
         } catch (\Exception $e) {
             return back()
                 ->withErrors(['course' => $e->getMessage()])
