@@ -21,10 +21,13 @@ class RejestracjaController extends Controller
             'password' => 'required|min:6',
             'imie' => 'required',
             'nazwisko' => 'required',
-            'adres' => 'required',
-            'nr_telefonu' => 'required',
+            'adres' => ['required', 'regex:/^ul\.\s*.+,\s*.+$/i'],
+            'nr_telefonu' => ['required', 'regex:/^\d{9}$/'],
             'adres_zdjecia' => 'nullable',
             'zdjecie' => 'nullable|image|max:2048',
+        ], [
+            'adres.regex' => 'Adres musi być w formacie: ul. Nazwa, Miasto',
+            'nr_telefonu.regex' => 'Numer telefonu musi składać się z dokładnie 9 cyfr.',
         ]);
 
         // Obsługa uploadu zdjęcia
