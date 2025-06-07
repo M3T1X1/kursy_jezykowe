@@ -7,7 +7,7 @@ class TransakcjeController extends Controller
 {
     public function index()
     {
-        
+
         // Pobierz transakcje wraz z klientem, kursem i instruktorem
         $transactions = Transakcja::with(['klient', 'kurs.instructor'])->get();
 
@@ -26,7 +26,7 @@ class TransakcjeController extends Controller
             ];
         });
 
-        
+
 
         return view('transakcje.transakcje', ['transactions' => $data]);
     }

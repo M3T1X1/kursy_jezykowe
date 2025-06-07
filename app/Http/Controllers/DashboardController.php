@@ -22,11 +22,11 @@ class DashboardController extends Controller
                 'client_email'   => $t->klient->email,
                 'course_name' => $t->kurs ? ($t->kurs->jezyk . ' ' . $t->kurs->poziom) : 'Brak kursu',
                 'course_id'      => $t->kurs->id_kursu,
-                'course_date'    => $t->data_kursu,
+                'course_date'    => ($t->kurs && $t->kurs->data_rozpoczecia) ? \Carbon\Carbon::parse($t->kurs->data_rozpoczecia)->format('Y-m-d') : '',
                 'instructor'     => ($t->kurs && $t->kurs->instructor) ? ($t->kurs->instructor->imie . ' ' . $t->kurs->instructor->nazwisko) : 'Brak instruktora',
                 'amount' => $t->cena_ostateczna,
                 'status'         => $t->status,
-                'transaction_date'=> $t->data_transakcji ? \Carbon\Carbon::parse($t->data_transakcji)->format('Y-m-d') : '',
+                'transaction_date'=> $t->data ? \Carbon\Carbon::parse($t->data)->format('Y-m-d') : '',
             ];
         });
 
