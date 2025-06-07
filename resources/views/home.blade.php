@@ -108,6 +108,9 @@
         </div>
       </div>
     </div>
+        <div class="text-center mb-5 mt-5">
+            <a href="{{ route ('oferta') }}" class ="btn btn-primary"> Zobacz wszystkie kursy</a>
+        </div>
   </div>
   <div class="container my-5">
     <h3 class="text-center mb-4">Poznaj naszych instruktorów</h3>
