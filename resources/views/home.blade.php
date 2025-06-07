@@ -138,6 +138,9 @@
         </div>
       </div>
     </div>
+        <div class="text-center mb-5 mt-5">
+            <a href="{{ route ('oferta') }}" class ="btn btn-primary"> Zobacz wszystkie kursy</a>
+        </div>
   </div>
   
   <div class="text-center mb-5">
