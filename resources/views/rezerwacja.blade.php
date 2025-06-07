@@ -10,12 +10,16 @@
     .booking-box { max-width: 520px; margin: 50px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.07); padding: 40px; }
     .booking-title { font-weight: bold; }
     .logo { display: block; margin: 0 auto 20px auto; width: 80px; }
+    .user-info { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+    .user-info label { font-weight: bold; color: #495057; }
+    .user-info p { margin: 0; color: #6c757d; }
   </style>
 </head>
 <body>
   <div class="booking-box">
     <img src="https://img.icons8.com/color/96/000000/language.png" class="logo" alt="Logo szkoły" />
     <h2 class="booking-title mb-4 text-center">Rezerwacja kursu językowego</h2>
+    
     @if ($errors->any())
       <div class="alert alert-danger">
         <ul class="mb-0">
@@ -35,29 +39,27 @@
     <form method="POST" action="{{ route('rezerwacja.submit') }}">
       @csrf
 
-      <h5 class="mb-3">Dane uczestnika</h5>
-      <div class="mb-3">
-        <label for="imie" class="form-label">Imię:</label>
-        <input type="text" class="form-control" id="imie" name="imie" required value="{{ old('imie') }}">
-      </div>
-      <div class="mb-3">
-        <label for="nazwisko" class="form-label">Nazwisko:</label>
-        <input type="text" class="form-control" id="nazwisko" name="nazwisko" required value="{{ old('nazwisko') }}">
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Email:</label>
-        <input type="email" class="form-control" id="email" name="email" required value="{{ old('email') }}">
-      </div>
-      <div class="mb-3">
-        <label for="nr_telefonu" class="form-label">Telefon:</label>
-        <input type="tel" class="form-control" id="nr_telefonu" name="nr_telefonu" required value="{{ old('nr_telefonu') }}">
+      <h5 class="mb-3">Twoje dane</h5>
+      <div class="user-info">
+        <div class="mb-2">
+          <label>Imię:</label>
+          <p>{{ $user->imie ?? $user->name ?? 'Nie podano' }}</p>
+        </div>
+        <div class="mb-2">
+          <label>Nazwisko:</label>
+          <p>{{ $user->nazwisko ?? 'Nie podano' }}</p>
+        </div>
+        <div class="mb-2">
+          <label>Email:</label>
+          <p>{{ $user->email }}</p>
+        </div>
+        <div class="mb-2">
+          <label>Telefon:</label>
+          <p>{{ $user->nr_telefonu ?? 'Nie podano' }}</p>
+        </div>
       </div>
 
       <h5 class="mb-3 mt-4">Szczegóły kursu</h5>
-
-      @php
-        // $selectedCourse jest przekazywany z kontrolera
-      @endphp
 
       @if($selectedCourse)
         <div class="mb-3">
@@ -77,7 +79,6 @@
           <p>{{ number_format($selectedCourse->cena, 2, ',', ' ') }} zł</p>
         </div>
         <input type="hidden" name="course" value="{{ $selectedCourse->id_kursu }}">
-        <input type="hidden" name="base_price" value="{{ $selectedCourse->cena }}">
       @else
         <div class="alert alert-warning">Brak dostępnych kursów do rezerwacji.</div>
       @endif

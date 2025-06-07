@@ -47,7 +47,7 @@
                 Cena: <strong>{{ $course->cena }} PLN</strong><br>
                 Start: <strong>{{ \Carbon\Carbon::parse($course->data_rozpoczecia)->format('Y-m-d') }}</strong>
               </p>
-              <a href="{{ route('rezerwacja.create', ['course' => $course->id_kursu]) }}" class="btn btn-primary mt-auto">Zapisz się</a>
+            <a href="{{ route('rezerwacja.create', ['course' => $course->id_kursu]) }}" class="btn btn-primary mt-auto">Zapisz się</a>
               <a href="{{ route('kursy.show', $course->id_kursu) }}" class="btn btn-outline-secondary w-100">Zobacz szczegóły</a>
             </div>
           </div>

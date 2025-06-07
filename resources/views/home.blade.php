@@ -17,10 +17,25 @@
     .instructor-name { color: #2c3e50; text-decoration: none; font-weight: 600; }
     .course-title { color: #2c3e50; text-decoration: none; font-weight: 600; }
     .instructor-name:hover, .course-title:hover { color: #3498db; }
-    .instruktorzy-scroll::-webkit-scrollbar {
-        height: 8px;
+    .instruktorzy-scroll::-webkit-scrollbar { height: 8px; }
+    
+  
+    .alert-container {display: flex; justify-content: center; margin: 20px 0;}
+    
+    .alert {padding: 15px 25px;border: 1px solid transparent; border-radius: 8px; text-align: center; max-width: 600px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
+    
+    .alert-success {color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;}
+    
+    .alert-danger {color: #a94442; background-color: #f2dede; border-color: #ebccd1;}
+    
+    .auto-hide {
+        animation: fadeOut 0.5s ease-in-out 4s forwards;
     }
 
+    @keyframes fadeOut {
+        0% { opacity: 1; }
+        100% { opacity: 0; visibility: hidden; }
+    }
   </style>
 </head>
 <body>
@@ -50,17 +65,32 @@
                 <a href="{{ route('register') }}" class="btn btn-secondary">Zarejestruj się</a>
             </div>
             @endif
-
-
-
     </div>
-    </nav>
+  </nav>
+
   <section class="hero text-center mb-5">
     <div class="container">
       <h1 class="display-4">Rozpocznij naukę języków z nami!</h1>
       <p class="lead">Nowoczesne kursy, doświadczeni instruktorzy, elastyczne terminy.</p>
     </div>
   </section>
+
+  
+  @if (session('success'))
+    <div class="alert-container">
+        <div class="alert alert-success auto-hide" id="success-alert">
+            <strong>Sukces!</strong> {{ session('success') }}
+        </div>
+    </div>
+  @endif
+
+  @if (session('error'))
+    <div class="alert-container">
+        <div class="alert alert-danger auto-hide" id="error-alert">
+            <strong>Błąd!</strong> {{ session('error') }}
+        </div>
+    </div>
+  @endif
 
   <div class="container mb-5">
     <h2 class="mb-4">Dostępne kursy</h2>
@@ -109,13 +139,16 @@
       </div>
     </div>
   </div>
+  
+  <div class="text-center mb-5">
+    <a href="{{ route('oferta') }}" class="btn btn-primary">Zobacz wszystkie kursy</a>
+  </div>
+
   <div class="container my-5">
     <h3 class="text-center mb-4">Poznaj naszych instruktorów</h3>
 
     @if($instruktorzy->count() > 0)
         <div class="py-3">
-            <h4 class="text-center mb-4"></h4>
-
             <div class="d-flex flex-wrap justify-content-center gap-3">
                 @foreach($instruktorzy as $instruktor)
                     <div style="width: 220px;">
@@ -141,7 +174,8 @@
     @else
         <p class="text-center">Brak dostępnych instruktorów.</p>
     @endif
-</div>
+  </div>
 
-
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
