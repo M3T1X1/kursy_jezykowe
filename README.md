@@ -1,61 +1,114 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌐 Projekt strony internetowej — Laravel + Blade
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Prosta strona internetowa stworzona przy użyciu frameworka **Laravel** i silnika szablonów **Blade**.  
+Projekt realizowany wspólnie przez nasz zespół w celach edukacyjnych i praktycznych. 🚀
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📋 Spis treści
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Opis projektu](#opis-projektu)
+- [Wymagania](#wymagania)
+- [Instalacja](#instalacja)
+- [Struktura projektu](#struktura-projektu)
+- [Uruchamianie](#uruchamianie)
+- [Przydatne komendy](#przydatne-komendy)
+- [Autorzy](#autorzy)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 📝 Opis projektu
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Projekt strony internetowej dla szkoły językowej, umożliwiającej klientom:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- rejestrację konta,
+- logowanie,
+- przeglądanie dostępnych kursów językowych,
+- rezerwację kursów online.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Strona posiada także panel administracyjny, w którym administrator może:
 
-## Laravel Sponsors
+- dodawać, edytować i usuwać kursy,
+- zarządzać instruktorami,
+- zarządzać klientami,
+- tworzyć i usuwać zniżki na kursy.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Projekt został stworzony w oparciu o framework Laravel oraz system szablonów Blade.  
+Strona jest w pełni responsywna i dostosowana do obsługi zarówno na komputerach, jak i urządzeniach mobilnych.
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Wymagania
 
-## Contributing
+- PHP >= 8.x
+- Composer
+- Laravel >= 10.x
+- Serwer WWW (opcjonalnie, np. Apache / Nginx)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Instalacja
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. Sklonuj repozytorium:
 
-## Security Vulnerabilities
+    W terminalu:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    git clone https:/https://github.com/M3T1X1/kursy_jezykowe/.git
+    
 
-## License
+2. Zainstaluj zależności:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    W terminalu: 
+
+    composer install
+
+3. Skopiuj plik środowiska:
+
+    W terminalu: 
+
+    cp .env.example .env
+
+4. Wygeneruj klucz aplikacji:
+
+    W terminalu:
+
+    php artisan key:generate
+
+5. Uruchom migrację bazy danych:
+
+    W terminalu:
+
+    php artisan migrate
+
+## Uruchamianie
+
+    W terminalu: 
+
+    php artisan serve
+
+    Domyślny adres: http://127.0.0.1:8000
+---
+
+## Struktura projektu
+
+    /app -> logika aplikacji (kontrolery, modele)
+    /bootstrap -> konfiguracja startowa
+    /config -> pliki konfiguracyjne
+    /database -> migracje i seedy
+    /public -> katalog publiczny (index.php)
+    /resources/views -> szablony Blade (.blade.php)
+    /routes -> definicje routingu (web.php, api.php)
+    /storage -> cache, logi, uploady
+    /tests -> testy
+    /vendor -> zależności Composer
+
+## Autorzy
+
+    Radosław Cebula
+    Kacper Dusza
+    Dawid Czeszek
+    Karol Brudniak
+
+## Licencja
+
+    Projekt edukacyjny - do dowolnego użytku wewnętrznego
