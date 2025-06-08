@@ -28,6 +28,9 @@
     
     .alert-danger {color: #a94442; background-color: #f2dede; border-color: #ebccd1;}
     
+
+    .auto-hide {animation: fadeOut 0.5s ease-in-out 4s forwards;}
+
     .auto-hide {
         animation: fadeOut 0.5s ease-in-out 4s forwards;
     }
