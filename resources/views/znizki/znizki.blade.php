@@ -147,10 +147,12 @@
   </div>
 
   <div class="main-content p-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="admin-title">Zniżki</h2>
-      <a href="{{ route('znizki.create') }}">Dodaj zniżkę</a>
-    </div>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="admin-title">Zniżki</h2>
+    <a href="{{ route('znizki.create') }}" class="btn btn-primary">
+      Dodaj zniżkę
+    </a>
+  </div>
 
     @if(session('success'))
       <div class="alert alert-success">{{ session('success') }}</div>
