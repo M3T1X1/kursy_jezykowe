@@ -31,6 +31,21 @@
     .auto-hide {
         animation: fadeOut 0.5s ease-in-out 4s forwards;
     }
+    .btn-custom {
+        background: linear-gradient(90deg, #4f8cff 0%, #38b6ff 100%);
+        color: #fff;
+        padding: 14px 30px;
+        font-size: 1.1rem;
+        border-radius: 50px;
+        font-weight: 600;
+        border: none;
+        box-shadow: 0 4px 12px rgba(56, 182, 255, 0.4);
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: inline-block;
+        text-decoration: none;
+}
 
     @keyframes fadeOut {
         0% { opacity: 1; }
@@ -138,6 +153,9 @@
         </div>
       </div>
     </div>
+        <div class="text-center mb-5 mt-5">
+            <a href="{{ route ('oferta') }}" class ="btn btn-custom"> Zobacz wszystkie kursy</a>
+        </div>
   </div>
   
   <div class="text-center mb-5">
