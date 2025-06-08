@@ -21,15 +21,76 @@ echo.
 echo Wszystkie wymagania sa spelnione!
 echo.
 
+
+
+echo Przygotowanie środowiska i instalacja zależności...
+
+echo.
+echo Sprawdzanie pliku .env...
+if not exist .env (
+    if exist .env.example (
+        copy .env.example .env
+        echo Plik .env został utworzony z .env.example
+    ) else (
+        echo BŁĄD: Brak pliku .env.example
+        pause
+        exit /b 1
+    )
+) else (
+    echo Plik .env już istnieje
+)
+
+
+echo.
+echo Sprawdzanie pliku .env...
+if not exist .env (
+    if exist .env.example (
+        copy .env.example .env
+        echo Plik .env został utworzony z .env.example
+    ) else (
+        echo BŁĄD: Brak pliku .env.example
+        pause
+        exit /b 1
+    )
+) else (
+    echo Plik .env już istnieje
+)
+
 echo.
 echo Generowanie klucza aplikacji...
 php artisan key:generate
 echo Klucz aplikacji został wygenerowany
 
+
+echo.
+echo Instalowanie zależności Composer...
+composer install --optimize-autoloader --no-dev
+if %errorlevel% neq 0 (
+    echo BŁĄD: Nie można zainstalować zależności Composer
+    pause
+    exit /b 1
+)
+echo Zależności Composer zostały zainstalowane
+
+echo.
+echo Czyszczenie cache aplikacji...
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+echo Cache został wyczyszczony
+
+echo.
+echo Generowanie cache konfiguracji...
+php artisan config:cache
+echo Cache konfiguracji został wygenerowany
+
+echo.
+
 echo.
 echo Konfigurowanie bazy danych PostgreSQL...
 
-set /p db_name="Podaj nazwę bazy danych : "
+set /p db_name="Podaj nazwę bazy danych [language_courses]: "
 if "%db_name%"=="" set db_name=language_courses
 
 set /p db_user="Podaj użytkownika bazy [postgres]: "
@@ -40,7 +101,6 @@ set /p db_password="Podaj hasło do bazy danych: "
 echo.
 echo Aktualizowanie pliku .env...
 
-:: Aktualizacja ustawień bazy danych
 powershell -Command "(Get-Content .env) -replace '^DB_CONNECTION=.*', 'DB_CONNECTION=pgsql' | Set-Content .env"
 powershell -Command "(Get-Content .env) -replace '^DB_HOST=.*', 'DB_HOST=127.0.0.1' | Set-Content .env"
 powershell -Command "(Get-Content .env) -replace '^DB_PORT=.*', 'DB_PORT=5432' | Set-Content .env"
@@ -67,15 +127,11 @@ if %errorlevel% neq 0 (
     echo.
     pause
 ) else (
-    echo ✓ Połączenie z bazą danych działa
+    echo Połączenie z bazą danych działa
 )
 
 
-echo [3/5] Instalacja zaleznosci i przygotowanie srodowiska...
-echo - Instalacja pakietow Composer
-echo - Kopiowanie .env.example do .env
-echo - Generowanie klucza aplikacji
-echo.
+
 
 echo [4/5] Automatyzacja migracji i seedowania danych...
 echo - Uruchomienie migracji bazy danych
