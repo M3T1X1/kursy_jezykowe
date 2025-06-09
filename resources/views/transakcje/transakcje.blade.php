@@ -237,7 +237,7 @@
                   {{ $transaction->kurs }}
                 </td>
                 <td>{{ $transaction->data_kursu }}</td>
-                <td>{{ $transaction->kurs->instructor->name ?? 'Brak instruktora' }}</td>
+                <td>{{ $transaction->instructor ?? 'Brak instruktora' }}</td>
                 <td>{{ $transaction->cena }}</td>
                 <td>
                   <span class="badge
