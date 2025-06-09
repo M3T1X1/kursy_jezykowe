@@ -83,15 +83,22 @@ class ReservationController extends Controller
                 ]);
 
                 // Oblicz cenę po zniżce (np. 10%)
-                $discountedPrice = $course->cena * 0.9;
+                // Pobierz aktywną największą zniżkę klienta
+                $activeDiscount = $client->znizki()
+                ->where('active', true)
+                ->orderByDesc('wartosc')
+                ->first();
 
-                // Utwórz transakcję
-                Transakcja::create([
+                $discountValue = $activeDiscount->wartosc ?? 0;
+                $discountedPrice = $course->cena * (1 - $discountValue / 100);
+
+                $transakcja = Transakcja::create([
                     'id_kursu' => $course->id_kursu,
                     'id_klienta' => $client->id_klienta,
                     'cena_ostateczna' => $discountedPrice,
                     'status' => 'Oczekuje',
                     'data' => now(),
+                    'reservation_id' => $reservation->id, 
                 ]);
             });
 
