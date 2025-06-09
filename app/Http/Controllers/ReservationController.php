@@ -57,6 +57,10 @@ class ReservationController extends Controller
                     throw new \Exception('Brak wolnych miejsc na ten kurs.');
                 }
 
+                if (now()->gt($course->data_zakonczenia)) {
+                    throw new \Exception('Nie można zapisać się na kurs, który już się zakończył.');
+                }
+
                 // Sprawdź, czy użytkownik już nie ma rezerwacji na ten kurs
                 $existingReservation = Reservation::where('email', $user->email)
                     ->where('course_id', $course->id_kursu)
@@ -81,8 +85,7 @@ class ReservationController extends Controller
                     'course_id' => $course->id_kursu,
                     'base_price' => $course->cena,
                 ]);
-
-                // Oblicz cenę po zniżce (np. 10%)
+                
                 // Pobierz aktywną największą zniżkę klienta
                 $activeDiscount = $client->znizki()
                 ->where('active', true)
