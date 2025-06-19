@@ -9,7 +9,8 @@ class Transakcja extends Model
     protected $primaryKey = 'id_transakcji';
 
     
-    protected $fillable = ['id_kursu', 'id_klienta', 'cena_ostateczna', 'status', 'data', 'reservation_id', 'klient_imie', 'klient_nazwisko', 'klient_email'];
+    protected $fillable = ['id_kursu', 'id_klienta', 'cena_ostateczna', 'status', 'data', 'reservation_id', 'klient_imie', 
+                            'klient_nazwisko', 'klient_email', 'kurs_jezyk', 'kurs_poziom', 'kurs_data_rozpoczecia'];
 
     protected $casts = [
         'data' => 'date',

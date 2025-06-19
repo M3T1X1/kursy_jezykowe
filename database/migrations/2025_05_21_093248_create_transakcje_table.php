@@ -9,8 +9,11 @@ return new class extends Migration {
     {
         Schema::create('transakcje', function (Blueprint $table) {
             $table->id('id_transakcji');
-            $table->unsignedBigInteger('id_kursu');
+            $table->unsignedBigInteger('id_kursu')->nullable();;
             $table->unsignedBigInteger('id_klienta')->nullable();
+            $table->string('kurs_jezyk');
+            $table->string('kurs_poziom');
+            $table->date('kurs_data_rozpoczecia');
             $table->string('klient_imie');
             $table->string('klient_nazwisko');
             $table->string('klient_email');
@@ -19,10 +22,11 @@ return new class extends Migration {
             $table->date('data');
             $table->timestamps();
 
+
             $table->foreign('id_kursu')
-                  ->references('id_kursu')
-                  ->on('kursy')
-                  ->onDelete('cascade');
+                ->references('id_kursu')
+                ->on('kursy')
+                ->onDelete('set null');
 
             $table->foreign('id_klienta')
                   ->references('id_klienta')

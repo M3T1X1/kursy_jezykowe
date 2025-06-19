@@ -16,9 +16,9 @@ class TransakcjeController extends Controller
             return (object)[
                 'kursant' => $t->klient_imie . ' ' . $t->klient_nazwisko,
                 'email' => $t->klient_email,
-                'kurs' => $t->kurs->jezyk . ' ' . $t->kurs->poziom,
-                'kurs_id' => $t->kurs->id_kursu,
-                'data_kursu' => \Carbon\Carbon::parse($t->kurs->data_rozpoczecia)->format('Y-m-d'),
+                'kurs' => $t->kurs_jezyk . ' ' . $t->kurs_poziom,
+                'kurs_id' => $t->id_kursu, 
+                'data_kursu' => \Carbon\Carbon::parse($t->kurs_data_rozpoczecia)->format('Y-m-d'),
                 'instructor' => ($t->kurs && $t->kurs->instructor) ? ($t->kurs->instructor->imie . ' ' . $t->kurs->instructor->nazwisko) : 'Brak instruktora',
                 'cena' => number_format($t->cena_ostateczna, 2, ',', ' '),
                 'status' => $t->status,
