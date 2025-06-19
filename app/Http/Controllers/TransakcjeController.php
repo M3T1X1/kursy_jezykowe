@@ -14,8 +14,8 @@ class TransakcjeController extends Controller
         // Mapujemy dane, by pasowały do widoku
         $data = $transactions->map(function ($t) {
             return (object)[
-                'kursant' => $t->klient->imie . ' ' . $t->klient->nazwisko,
-                'email' => $t->klient->email,
+                'kursant' => $t->klient_imie . ' ' . $t->klient_nazwisko,
+                'email' => $t->klient_email,
                 'kurs' => $t->kurs->jezyk . ' ' . $t->kurs->poziom,
                 'kurs_id' => $t->kurs->id_kursu,
                 'data_kursu' => \Carbon\Carbon::parse($t->kurs->data_rozpoczecia)->format('Y-m-d'),

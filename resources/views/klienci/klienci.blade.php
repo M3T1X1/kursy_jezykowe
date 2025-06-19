@@ -161,6 +161,18 @@
     </div>
   </div>
  <div class="main-content">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="admin-title">Lista klientów</h2>
         <a href="{{ route('register.form', ['admin' => 1]) }}" class="btn btn-primary">
@@ -218,6 +230,7 @@
                 <a href="{{ route('klienci.edit', $klient->id_klienta) }}" class="btn btn-sm btn-outline-secondary btn-action" title="Edytuj">
                 <i class="bi bi-pencil"></i>
                 </a>
+                @if($klient->id_klienta != Auth::id())
                 <form action="{{ route('klienci.destroy', $klient->id_klienta) }}" method="POST" style="display:inline;">
                 @csrf
                 @method('DELETE')
@@ -225,6 +238,7 @@
                     <i class="bi bi-trash"></i>
                 </button>
                 </form>
+                @endif
             </td>
             </tr>
         @endforeach

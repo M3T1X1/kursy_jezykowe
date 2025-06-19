@@ -98,6 +98,9 @@ class ReservationController extends Controller
                 $transakcja = Transakcja::create([
                     'id_kursu' => $course->id_kursu,
                     'id_klienta' => $client->id_klienta,
+                    'klient_imie' => $client->imie,
+                    'klient_nazwisko' => $client->nazwisko,
+                    'klient_email' => $client->email,
                     'cena_ostateczna' => $discountedPrice,
                     'status' => 'Oczekuje',
                     'data' => now(),

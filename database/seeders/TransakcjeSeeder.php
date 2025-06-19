@@ -12,7 +12,7 @@ class TransakcjeSeeder extends Seeder
 {
     public function run(): void
     {
-        $klienci = DB::table('klienci')->pluck('id_klienta')->toArray();
+        $klienci = \App\Models\Klient::all();
         $kursy = DB::table('kursy')->pluck('id_kursu')->toArray();
 
         if (empty($klienci) || empty($kursy)) {
@@ -23,9 +23,15 @@ class TransakcjeSeeder extends Seeder
         $statusy = ['Opłacone', 'Oczekuje', 'Anulowane'];
 
         for ($i = 0; $i < 20; $i++) {
+
+            $klient = $klienci->random();
+
             Transakcja::create([
-                'id_klienta' => $klienci[array_rand($klienci)],
+                'id_klienta' => $klient->id_klienta,
                 'id_kursu' => $kursy[array_rand($kursy)],
+                'klient_imie'     => $klient->imie,
+                'klient_nazwisko' => $klient->nazwisko,
+                'klient_email'    => $klient->email,
                 'cena_ostateczna' => rand(100, 1000),
                 'status' => $statusy[array_rand($statusy)],
                 'data' => Carbon::now()->subDays(rand(0, 365))->format('Y-m-d'),

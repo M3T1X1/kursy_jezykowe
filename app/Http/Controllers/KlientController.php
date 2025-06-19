@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Klient;
 
@@ -30,6 +31,12 @@ class KlientController extends Controller
 
     public function destroy($id_klienta)
     {
+
+        if (Auth::id() == $id_klienta) {
+            return redirect()->route('klienci.index')
+                ->with('error', 'Nie możesz usunąć swojego własnego konta!');
+        }
+
         $klient = \App\Models\Klient::findOrFail($id_klienta);
         $klient->delete();
 
