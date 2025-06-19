@@ -6,88 +6,12 @@
   <title>Instruktorzy</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
   <style>
-    body {
-      background: #f4f6fa;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    .sidebar {
-      min-height: 100vh;
-      background: #343a40;
-      color: #fff;
-      padding: 30px 0;
-      position: fixed;
-      width: 250px;
-      top: 0;
-      left: 0;
-      z-index: 100;
-      transition: all 0.3s;
-    }
-    .sidebar .nav-link {
-      color: rgba(255, 255, 255, 0.8);
-      padding: 12px 30px;
-      display: flex;
-      align-items: center;
-      margin: 4px 16px;
-      border-radius: 6px;
-      transition: all 0.2s;
-    }
-    .sidebar .nav-link i {
-      margin-right: 10px;
-      font-size: 1.1rem;
-    }
-    .sidebar .nav-link.active, .sidebar .nav-link:hover {
-      background: #495057;
-      color: #fff;
-    }
-    .main-content {
-      margin-left: 250px;
-      padding: 40px 30px;
-      transition: all 0.3s;
-    }
-    .admin-title {
-      font-weight: 600;
-      color: #2c3e50;
-    }
-    .table th {
-      font-weight: 600;
-      color: #2c3e50;
-    }
-    .table-hover tbody tr:hover {
-      background-color: rgba(52, 152, 219, 0.05);
-    }
-    .search-input {
-      border-radius: 20px;
-      padding-left: 40px;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>');
-      background-repeat: no-repeat;
-      background-position: 15px center;
-      background-size: 15px;
-      margin-bottom: 15px;
-    }
-    @media (max-width: 991px) {
-      .main-content { margin-left: 0; }
-      .sidebar { position: static; width: 100%; min-height: unset; }
-    }
-
-    .table-responsive {
-        padding-bottom: 0 !important;
-        margin-bottom: 0 !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }
-    th, td {
-            text-align: center;          /* Wyśrodkowanie poziome */
-            vertical-align: middle;      /* Wyśrodkowanie pionowe */
-            padding: 8px;
-        }
-    img {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-        border-radius: 50%;
-        display: inline-block;
-        vertical-align: middle;      /* Ważne dla obrazka */
+    /* Wyśrodkowanie tekstu w komórkach tabeli */
+    #instruktorzyTable td {
+      vertical-align: middle;
     }
   </style>
 </head>
@@ -124,103 +48,103 @@
   </div>
 
   <div class="main-content">
-  <h2 class="admin-title mb-4">Instruktorzy</h2>
-
-  <div class="d-flex justify-content-end mb-3">
-    <a href="{{ url('instruktorzy/create') }}" class="btn btn-primary">
-      Dodaj Instruktora
-    </a>
-  </div>
-
-  <!-- Filtry -->
-  <div class="row align-items-end mb-3 gx-2 filter-row">
-  <div class="col-md-2 mb-2">
-    <input type="text" class="form-control filter-instruktorzy" placeholder="Imię" data-column="0" />
-  </div>
-  <div class="col-md-2 mb-2">
-    <input type="text" class="form-control filter-instruktorzy" placeholder="Nazwisko" data-column="1" />
-  </div>
-  <div class="col-md-2 mb-2">
-    <input type="text" class="form-control filter-instruktorzy" placeholder="Email" data-column="2" />
-  </div>
-  <div class="col-md-2 mb-2">
-    <select class="form-select filter-instruktorzy" data-column="3">
-      <option value="">Specjalizacja</option>
-      <option>Angielski</option>
-      <option>Niemiecki</option>
-      <option>Hiszpański</option>
-    </select>
-  </div>
-  <div class="col-md-3 mb-2">
-    <select class="form-select filter-instruktorzy" data-column="4">
-      <option value="">Poziom</option>
-      <option>Beginner</option>
-      <option>Średniozaawansowany</option>
-      <option>Zaawansowany</option>
-    </select>
-  </div>
-    <div class="col-md-2 mb-2">
-        <!-- Puste -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="admin-title">Instruktorzy</h2>
+      <a href="{{ url('instruktorzy/create') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Dodaj Instruktora
+      </a>
     </div>
-</div>
 
-  <!-- Tabela instruktorów -->
-  <div class="table-responsive bg-white">
-    <table class="table table-hover mb-0" id="instruktorzyTable">
-      <thead>
-        <tr>
-          <th>Zdjęcie</th>
-          <th>Imię</th>
-          <th>Nazwisko</th>
-          <th>Email</th>
-          <th>Specjalizacja</th>
-          <th>Poziom</th>
-          <th>Płaca</th>
-          <th>Akcje</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach ($instruktorzy as $instruktor)
+    <!-- Filtry -->
+    <div class="row mb-4 filters">
+      <div class="col-md-2">
+        <input type="text" class="form-control filter-instruktorzy" placeholder="Imię" data-column="1" />
+      </div>
+      <div class="col-md-2">
+        <input type="text" class="form-control filter-instruktorzy" placeholder="Nazwisko" data-column="2" />
+      </div>
+      <div class="col-md-2">
+        <input type="text" class="form-control filter-instruktorzy" placeholder="Email" data-column="3" />
+      </div>
+      <div class="col-md-2">
+        <select class="form-select filter-instruktorzy" data-column="4">
+          <option value="">Specjalizacja</option>
+          <option>Angielski</option>
+          <option>Niemiecki</option>
+          <option>Hiszpański</option>
+          <option>Francuski</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select class="form-select filter-instruktorzy" data-column="5">
+          <option value="">Poziom</option>
+          <option>Początkujący</option>
+          <option>Średniozaawansowany</option>
+          <option>Zaawansowany</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tabela instruktorów -->
+    <div class="table-responsive bg-white p-3 rounded shadow-sm">
+      <table class="table table-hover mb-0" id="instruktorzyTable">
+        <thead>
           <tr>
-            <td style="text-align: center; vertical-align: middle; padding: 8px;">
-                 @if($instruktor->adres_zdjecia && file_exists(public_path($instruktor->adres_zdjecia)))
-            <img src="{{ asset($instruktor->adres_zdjecia) }}" alt="Zdjęcie instruktora" style="width:50px; height:50px; border-radius:50%;">
-                @else
-                <img src="{{ asset('img/ZdjeciaInstruktorow/brak.png') }}" alt="Brak zdjęcia" style="width:50px; height:50px; border-radius:50%;">
-                @endif
-            </td>
-            <td>{{ $instruktor->imie }}</td>
-            <td>{{ $instruktor->nazwisko }}</td>
-            <td>{{ $instruktor->email }}</td>
-            <td>{{ $instruktor->jezyk }}</td>
-            <td>{{ $instruktor->poziom }}</td>
-            <td>{{ $instruktor->placa }} zł/h</td>
-            <td>
-              <a href="{{ url('instruktorzy/edit/' . $instruktor->id) }}" class="btn btn-sm btn-outline-primary btn-action" title="Edytuj">
-                <i class="bi bi-pencil"></i>
-              </a>
-              <form action="{{ url('instruktorzy/delete/' . $instruktor->id) }}" method="POST" class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-outline-danger btn-action" onclick="return confirm('Czy na pewno chcesz usunąć tego instruktora?')" title="Usuń">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </form>
-            </td>
+            <th>Zdjęcie</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Email</th>
+            <th>Specjalizacja</th>
+            <th>Poziom</th>
+            <th>Płaca</th>
+            <th>Akcje</th>
           </tr>
-        @endforeach
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          @foreach ($instruktorzy as $instruktor)
+            <tr>
+              <td style="text-align: center;">
+                @if($instruktor->adres_zdjecia && file_exists(public_path($instruktor->adres_zdjecia)))
+                  <img src="{{ asset($instruktor->adres_zdjecia) }}" alt="Zdjęcie instruktora" style="width:50px; height:50px; border-radius:50%; object-fit: cover;">
+                @else
+                  <img src="{{ asset('img/ZdjeciaInstruktorow/brak.png') }}" alt="Brak zdjęcia" style="width:50px; height:50px; border-radius:50%; object-fit: cover;">
+                @endif
+              </td>
+              <td>{{ $instruktor->imie }}</td>
+              <td>{{ $instruktor->nazwisko }}</td>
+              <td>{{ $instruktor->email }}</td>
+              <td>{{ $instruktor->jezyk }}</td>
+              <td>{{ $instruktor->poziom }}</td>
+              <td>{{ $instruktor->placa }} zł/h</td>
+              <td>
+                <div class="d-flex gap-1">
+                  <a href="{{ url('instruktorzy/edit/' . $instruktor->id) }}" class="btn btn-sm btn-outline-primary btn-action" title="Edytuj">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <form action="{{ url('instruktorzy/delete/' . $instruktor->id) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-outline-danger btn-action" onclick="return confirm('Czy na pewno chcesz usunąć tego instruktora?')" title="Usuń">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+
+      @if($instruktorzy->hasPages())
         <div class="mt-3">
-           {{ $instruktorzy->links('pagination::simple-bootstrap-5') }}
-
-            <div class="mt-2 text-muted">
+          {{ $instruktorzy->links('pagination::simple-bootstrap-5') }}
+          <div class="mt-2 text-muted">
             Strona {{ $instruktorzy->currentPage() }} z {{ $instruktorzy->lastPage() }}
-            </div>
+          </div>
         </div>
+      @endif
+    </div>
   </div>
-</div>
-
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -228,12 +152,9 @@
   <!-- Filter Script -->
   <script>
     document.querySelectorAll('.filter-instruktorzy').forEach(input => {
-      // for text inputs: listen to 'input'
       if (input.tagName.toLowerCase() === 'input') {
         input.addEventListener('input', filterTable);
-      }
-      // for selects: listen to 'change'
-      else if (input.tagName.toLowerCase() === 'select') {
+      } else if (input.tagName.toLowerCase() === 'select') {
         input.addEventListener('change', filterTable);
       }
     });
