@@ -18,8 +18,8 @@ class DashboardController extends Controller
         ->get()
         ->map(function($t) {
             return (object)[
-                'client_name'    => $t->klient->imie . ' ' . $t->klient->nazwisko,
-                'client_email'   => $t->klient->email,
+                'client_name'    => $t->klient_imie . ' ' . $t->klient_nazwisko,
+                'client_email'   => $t->klient_email,
                 'course_name' => $t->kurs ? ($t->kurs->jezyk . ' ' . $t->kurs->poziom) : 'Brak kursu',
                 'course_id'      => $t->kurs->id_kursu,
                 'course_date'    => ($t->kurs && $t->kurs->data_rozpoczecia) ? \Carbon\Carbon::parse($t->kurs->data_rozpoczecia)->format('Y-m-d') : '',

@@ -10,7 +10,10 @@ return new class extends Migration {
         Schema::create('transakcje', function (Blueprint $table) {
             $table->id('id_transakcji');
             $table->unsignedBigInteger('id_kursu');
-            $table->unsignedBigInteger('id_klienta');
+            $table->unsignedBigInteger('id_klienta')->nullable();
+            $table->string('klient_imie');
+            $table->string('klient_nazwisko');
+            $table->string('klient_email');
             $table->decimal('cena_ostateczna', 10, 2);
             $table->string('status');
             $table->date('data');
@@ -24,7 +27,7 @@ return new class extends Migration {
             $table->foreign('id_klienta')
                   ->references('id_klienta')
                   ->on('klienci')
-                  ->onDelete('cascade');
+                  ->onDelete('set null');
         });
     }
 
