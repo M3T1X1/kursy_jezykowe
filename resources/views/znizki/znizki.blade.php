@@ -20,7 +20,7 @@
       <a href="{{ url('klienci') }}" class="nav-link"><i class="bi bi-people"></i> Klienci</a>
       <a href="{{ url('transakcje') }}" class="nav-link"><i class="bi bi-cash-coin"></i> Transakcje</a>
       <a href="{{ url('znizki') }}" class="nav-link active"><i class="bi bi-tag"></i> Zniżki</a>
-      <a href="{{ url('/home') }}" class="nav-link mt-auto" target="_blank"><i class="bi bi-house"></i> Strona główna</a>
+      <a href="{{ url('/home') }}" class="nav-link mt-auto"><i class="bi bi-house"></i> Strona główna</a>
       <form method="POST" action="{{ route('logout') }}">
         @csrf
         <button class="nav-link btn btn-link" style="color: inherit; text-align: left;">

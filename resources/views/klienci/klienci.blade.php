@@ -149,7 +149,7 @@
       <a href="{{ url('znizki') }}" class="nav-link">
         <i class="bi bi-tag"></i> Zniżki
       </a>
-      <a href="{{ url('/home') }}" class="nav-link mt-auto" target="_blank">
+      <a href="{{ url('/home') }}" class="nav-link mt-auto">
         <i class="bi bi-house"></i> Strona główna
       </a>
       <form method="POST" action="{{ route('logout') }}">
