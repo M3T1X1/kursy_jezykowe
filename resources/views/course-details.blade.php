@@ -115,18 +115,22 @@
                 </div>
             </div>
 
-            @if($course->hasInstructor())
-                <div class="mt-4" style="border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); background: white; padding: 12px; min-height: auto !important; height: auto !important;">
-                    <div class="d-flex align-items-center">
-                        <img
-                            src="{{ $course->instructor_photo_url }}"
-                            alt="Instruktor"
-                            class="rounded-circle me-2"
-                            style="width: 35px; height: 35px; object-fit: cover;"
-                        >
-                        <span style="font-weight: 500;">Instruktor - {{ $course->instructor_full_name }}</span>
+            @if($course->instructor)
+            <div class="instructor-card p-4 mt-4">
+                <h5 class="mb-3">Instruktor kursu</h5>
+                <div class="d-flex align-items-center mb-3">
+                    <img
+                        src="{{ $course->instructor->adres_zdjecia ? asset($course->instructor->adres_zdjecia) : asset('img/ZdjeciaInstruktorow/brak.png') }}"
+                        alt="Zdjęcie instruktora {{ $course->instructor->imie }} {{ $course->instructor->nazwisko }}"
+                        class="instructor-img me-3"
+                        style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;"
+                    >
+                    <div>
+                        <h6 class="mb-1">{{ $course->instructor->imie }} {{ $course->instructor->nazwisko }}</h6>
+                        <p class="text-muted mb-0">Instruktor języka {{ $course->jezyk }}</p>
                     </div>
                 </div>
+            </div>
             @endif
         </div>
     </div>

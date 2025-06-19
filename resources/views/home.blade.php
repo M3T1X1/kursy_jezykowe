@@ -69,8 +69,8 @@
                     <div class="card-body d-flex flex-column">
                         <h5><a href="course-detail.html?id={{ $kurs->id_kursu }}" class="course-title">{{ $kurs->jezyk }} - {{ $kurs->poziom }}</a></h5>
                         <p class="card-text flex-grow-1">
-                            @if($kurs->hasInstructor())
-                                Instruktor: <span class="instructor-name">{{ $kurs->instructor_full_name }}</span><br>
+                            @if($kurs->instructor)
+                                Instruktor: <a href="instructor-detail.html?id={{ $kurs->instructor->id }}" class="instructor-name">{{ $kurs->instructor->imie }} {{ $kurs->instructor->nazwisko }}</a><br>
                             @else
                                 Instruktor: Brak przypisanego<br>
                             @endif

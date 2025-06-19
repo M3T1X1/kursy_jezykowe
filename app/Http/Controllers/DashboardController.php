@@ -21,7 +21,7 @@ class DashboardController extends Controller
                 'client_name'    => $t->klient_imie . ' ' . $t->klient_nazwisko,
                 'client_email'   => $t->klient_email,
                 'course_name' => $t->kurs ? ($t->kurs->jezyk . ' ' . $t->kurs->poziom) : 'Brak kursu',
-                'course_id'      => $t->kurs->id_kursu,
+                'course_id'      => $t->kurs ? $t->kurs->id_kursu : null, // POPRAWKA
                 'kurs' => $t->kurs_jezyk . ' ' . $t->kurs_poziom,
                 'course_date'    => ($t->kurs && $t->kurs->data_rozpoczecia) ? \Carbon\Carbon::parse($t->kurs->data_rozpoczecia)->format('Y-m-d') : '',
                 'instructor'     => ($t->kurs && $t->kurs->instructor) ? ($t->kurs->instructor->imie . ' ' . $t->kurs->instructor->nazwisko) : 'Brak instruktora',

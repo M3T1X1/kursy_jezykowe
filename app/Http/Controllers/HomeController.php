@@ -9,8 +9,8 @@ class HomeController extends Controller
 {
     public function index()
 {
-    // Pobieramy losowo 3 kursy (nie trzeba już with('instructor'))
-    $kursy = Course::inRandomOrder()->take(3)->get();
+    // Pobieramy losowo 3 kursy z instruktorami
+    $kursy = Course::with('instructor')->inRandomOrder()->take(3)->get();
 
     // Mapujemy kursy, aby dodać pełny URL do zdjęcia z fallbackiem
     $kursy->transform(function ($kurs) {
@@ -25,7 +25,7 @@ class HomeController extends Controller
         return $kurs;
     });
 
-    // Instruktorzy bez zmian
+    // Instruktorzy
     $instruktorzy = Instruktor::inRandomOrder()->take(5)->get();
     $instruktorzy->transform(function ($instruktor) {
         $sciezkaZdjecia = public_path($instruktor->adres_zdjecia);

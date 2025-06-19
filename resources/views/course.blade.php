@@ -9,6 +9,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
   <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+  <style>
+    /* Wyśrodkowanie tekstu w komórkach tabeli */
+    #coursesTable td {
+      vertical-align: middle;
+    }
+  </style>
 </head>
 <body>
   <!-- Sidebar -->
@@ -36,144 +42,146 @@
 
     <!-- Filtry -->
     <div class="row mb-4 filters">
-  <div class="col-md-2">
-    <input class="form-control filter-kursy" name="jezyk" placeholder="Język" value="{{ request('jezyk') }}" />
-  </div>
-  <div class="col-md-2">
-    <input class="form-control filter-kursy" name="poziom" placeholder="Poziom" value="{{ request('poziom') }}" />
-  </div>
-  <div class="col-md-2">
-    <input class="form-control filter-kursy" name="cena_max" type="number" placeholder="Cena max" value="{{ request('cena_max') }}" />
-  </div>
-  <div class="col-md-2">
-    <input class="form-control filter-kursy" name="instruktor" placeholder="Instruktor" value="{{ request('instruktor') }}" />
-  </div>
-  <div class="col-md-2">
-    <input class="form-control filter-kursy" name="miejsca" placeholder="Miejsca" value="{{ request('miejsca') }}" />
-  </div>
-</div>
+      <div class="col-md-2">
+        <input class="form-control filter-kursy" name="jezyk" placeholder="Język" value="{{ request('jezyk') }}" />
+      </div>
+      <div class="col-md-2">
+        <input class="form-control filter-kursy" name="poziom" placeholder="Poziom" value="{{ request('poziom') }}" />
+      </div>
+      <div class="col-md-2">
+        <input class="form-control filter-kursy" name="cena_max" type="number" placeholder="Cena max" value="{{ request('cena_max') }}" />
+      </div>
+      <div class="col-md-2">
+        <input class="form-control filter-kursy" name="instruktor" placeholder="Instruktor" value="{{ request('instruktor') }}" />
+      </div>
+      <div class="col-md-2">
+        <input class="form-control filter-kursy" name="miejsca" placeholder="Miejsca" value="{{ request('miejsca') }}" />
+      </div>
+    </div>
 
-<div class="table-responsive bg-white p-3 rounded shadow-sm">
-  <table class="table" id="coursesTable">
-    <thead>
-      <tr>
-        <th>Nazwa kursu</th>
-        <th>Język</th>
-        <th>Poziom</th>
-        <th>Instruktor</th>
-        <th>Start</th>
-        <th>Koniec</th>
-        <th>Cena</th>
-        <th>Miejsca</th>
-        <th>Akcje</th>
-      </tr>
-    </thead>
-    <tbody>
-    @foreach ($courses as $course)
-      <tr>
-        <td>
-          {{ $course->jezyk }} {{ $course->poziom }}
-        </td>
-        <td>
-          {{ $course->jezyk }}
-        </td>
-        <td>{{ $course->poziom }}</td>
-        <td>
-          <td>
-            @if ($course->hasInstructor())
-                {{ $course->instructor_full_name }}
-            @else
+    <div class="table-responsive bg-white p-3 rounded shadow-sm">
+      <table class="table" id="coursesTable">
+        <thead>
+          <tr>
+            <th>Nazwa kursu</th>
+            <th>Język</th>
+            <th>Poziom</th>
+            <th>Instruktor</th>
+            <th>Start</th>
+            <th>Koniec</th>
+            <th>Cena</th>
+            <th>Miejsca</th>
+            <th>Akcje</th>
+          </tr>
+        </thead>
+        <tbody>
+        @foreach ($courses as $course)
+          <tr>
+            <td>
+              {{ $course->jezyk }} {{ $course->poziom }}
+            </td>
+            <td>
+              {{ $course->jezyk }}
+            </td>
+            <td>{{ $course->poziom }}</td>
+            <td>
+              @if ($course->instructor)
+                {{ $course->instructor->imie }} {{ $course->instructor->nazwisko }}
+              @else
                 <span class="text-muted">Brak instruktora</span>
-            @endif
-</td>
-        </td>
-        <td>{{ \Carbon\Carbon::parse($course->data_rozpoczecia)->format('Y-m-d') }}</td>
-        <td>{{ \Carbon\Carbon::parse($course->data_zakonczenia)->format('Y-m-d') }}</td>
-        <td>{{ $course->cena }}</td>
-        <td>{{ $course->liczba_miejsc }}</td>
-        <td class="d-flex gap-1">
-          <a href="{{ route('kursy.edit', $course->id_kursu) }}" class="btn btn-sm btn-outline-primary" title="Edytuj">
-            <i class="bi bi-pencil"></i>
-          </a>
+              @endif
+            </td>
+            <td>{{ \Carbon\Carbon::parse($course->data_rozpoczecia)->format('Y-m-d') }}</td>
+            <td>{{ \Carbon\Carbon::parse($course->data_zakonczenia)->format('Y-m-d') }}</td>
+            <td>{{ $course->cena }}</td>
+            <td>{{ $course->liczba_miejsc }}</td>
+            <td>
+              <div class="d-flex gap-1">
+                <a href="{{ route('kursy.edit', $course->id_kursu) }}" class="btn btn-sm btn-outline-primary" title="Edytuj">
+                  <i class="bi bi-pencil"></i>
+                </a>
 
-          <form action="{{ route('kursy.destroy', $course->id_kursu) }}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć ten kurs?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-sm btn-outline-danger" title="Usuń">
-              <i class="bi bi-trash"></i>
-            </button>
-          </form>
-        </td>
-      </tr>
-    @endforeach
-    </tbody>
-  </table>
-</div>
+                <form action="{{ route('kursy.destroy', $course->id_kursu) }}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć ten kurs?')">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-sm btn-outline-danger" title="Usuń">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        @endforeach
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const inputJezyk = document.querySelector('input[name="jezyk"]');
-    const inputPoziom = document.querySelector('input[name="poziom"]');
-    const inputCenaMax = document.querySelector('input[name="cena_max"]');
-    const inputInstruktor = document.querySelector('input[name="instruktor"]');
-    const inputMiejsca = document.querySelector('input[name="miejsca"]');
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const inputJezyk = document.querySelector('input[name="jezyk"]');
+      const inputPoziom = document.querySelector('input[name="poziom"]');
+      const inputCenaMax = document.querySelector('input[name="cena_max"]');
+      const inputInstruktor = document.querySelector('input[name="instruktor"]');
+      const inputMiejsca = document.querySelector('input[name="miejsca"]');
 
-    const table = document.getElementById('coursesTable');
-    const rows = table.querySelectorAll('tbody tr');
+      const table = document.getElementById('coursesTable');
+      const rows = table.querySelectorAll('tbody tr');
 
-    if (!table) {
-        console.error('Tabela coursesTable nie znaleziona');
-        return;
-    }
+      if (!table) {
+          console.error('Tabela coursesTable nie znaleziona');
+          return;
+      }
 
-    [inputJezyk, inputPoziom, inputCenaMax, inputInstruktor, inputMiejsca].forEach(input => {
-        if(input) {
-            input.addEventListener('input', function() {
-                console.log(`Filtrowanie po: ${input.name} = ${input.value}`);
-                filterRows();
-            });
-        } else {
-            console.warn('Nie znaleziono inputa:', input);
-        }
-    });
+      [inputJezyk, inputPoziom, inputCenaMax, inputInstruktor, inputMiejsca].forEach(input => {
+          if(input) {
+              input.addEventListener('input', function() {
+                  console.log(`Filtrowanie po: ${input.name} = ${input.value}`);
+                  filterRows();
+              });
+          } else {
+              console.warn('Nie znaleziono inputa:', input);
+          }
+      });
 
-    function filterRows() {
-        const filterJezyk = inputJezyk?.value.trim().toLowerCase() || '';
-        const filterPoziom = inputPoziom?.value.trim().toLowerCase() || '';
-        const filterCena = parseFloat(inputCenaMax?.value.replace(',', '.') || NaN);
-        const filterInstruktor = inputInstruktor?.value.trim().toLowerCase() || '';
-        const filterMiejsca = parseInt(inputMiejsca?.value) || NaN;
+      function filterRows() {
+          const filterJezyk = inputJezyk?.value.trim().toLowerCase() || '';
+          const filterPoziom = inputPoziom?.value.trim().toLowerCase() || '';
+          const filterCena = parseFloat(inputCenaMax?.value.replace(',', '.') || NaN);
+          const filterInstruktor = inputInstruktor?.value.trim().toLowerCase() || '';
+          const filterMiejsca = parseInt(inputMiejsca?.value) || NaN;
 
-        rows.forEach(row => {
-            const cells = row.children;
+          rows.forEach(row => {
+              const cells = row.children;
 
-            const jezyk = cells[1].textContent.trim().toLowerCase();
-            const poziom = cells[2].textContent.trim().toLowerCase();
-            const instruktor = cells[3].textContent.trim().toLowerCase();
-            const cena = parseFloat(cells[6].textContent.replace(',', '.')) || NaN;
-            const miejsca = parseInt(cells[7].textContent) || NaN;
+              const jezyk = cells[1].textContent.trim().toLowerCase();
+              const poziom = cells[2].textContent.trim().toLowerCase();
+              const instruktor = cells[3].textContent.trim().toLowerCase();
+              const cena = parseFloat(cells[6].textContent.replace(',', '.')) || NaN;
+              const miejsca = parseInt(cells[7].textContent) || NaN;
 
-            let show = true;
+              let show = true;
 
-            if(filterJezyk && !jezyk.includes(filterJezyk)) {
-                show = false;
-            }
-            if(filterPoziom && !poziom.includes(filterPoziom)) {
-                show = false;
-            }
-            if(!isNaN(filterCena) && (isNaN(cena) || cena > filterCena)) {
-                show = false;
-            }
-            if(filterInstruktor && !instruktor.includes(filterInstruktor)) {
-                show = false;
-            }
-            if(!isNaN(filterMiejsca) && miejsca !== filterMiejsca) {
-                show = false;
-            }
+              if(filterJezyk && !jezyk.includes(filterJezyk)) {
+                  show = false;
+              }
+              if(filterPoziom && !poziom.includes(filterPoziom)) {
+                  show = false;
+              }
+              if(!isNaN(filterCena) && (isNaN(cena) || cena > filterCena)) {
+                  show = false;
+              }
+              if(filterInstruktor && !instruktor.includes(filterInstruktor)) {
+                  show = false;
+              }
+              if(!isNaN(filterMiejsca) && miejsca !== filterMiejsca) {
+                  show = false;
+              }
 
-            row.style.display = show ? '' : 'none';
-        });
-    }
-});
-</script>
+              row.style.display = show ? '' : 'none';
+          });
+      }
+  });
+  </script>
 </body>
+</html>
