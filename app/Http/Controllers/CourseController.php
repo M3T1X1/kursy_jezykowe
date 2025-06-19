@@ -7,8 +7,6 @@ use App\Models\Instruktor;
 
 class CourseController extends Controller
 {
-
-    
     public function index(Request $request) {
         $query = Course::with('instructor');
         

@@ -4,57 +4,7 @@
   <meta charset="UTF-8">
   <title>Szkoła Językowa</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body { background: #f8fafc; }
-    .course-card img { border-radius: 8px 8px 0 0; }
-    .course-card { box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-radius: 8px; transition: transform 0.3s; }
-    .course-card:hover { transform: translateY(-5px); }
-    .hero { background: linear-gradient(90deg, #4f8cff 0%, #38b6ff 100%); color: #fff; padding: 60px 0; border-radius: 0 0 30px 30px; }
-    .instructors img { border-radius: 50%; width: 120px; height: 120px; object-fit: cover; transition: transform 0.3s; }
-    .instructor-card:hover img { transform: scale(1.05); }
-    .testimonial { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 20px; margin: 10px 0; }
-    .btn-group-auth { gap: 10px; }
-    .instructor-name { color: #2c3e50; text-decoration: none; font-weight: 600; }
-    .course-title { color: #2c3e50; text-decoration: none; font-weight: 600; }
-    .instructor-name:hover, .course-title:hover { color: #3498db; }
-    .instruktorzy-scroll::-webkit-scrollbar { height: 8px; }
-    
-  
-    .alert-container {display: flex; justify-content: center; margin: 20px 0;}
-    
-    .alert {padding: 15px 25px;border: 1px solid transparent; border-radius: 8px; text-align: center; max-width: 600px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
-    
-    .alert-success {color: #3c763d; background-color: #dff0d8;border-color: #d6e9c6;}
-    
-    .alert-danger {color: #a94442; background-color: #f2dede; border-color: #ebccd1;}
-    
-
-    .auto-hide {animation: fadeOut 0.5s ease-in-out 4s forwards;}
-
-    .auto-hide {
-        animation: fadeOut 0.5s ease-in-out 4s forwards;
-    }
-    .btn-custom {
-        background: linear-gradient(90deg, #4f8cff 0%, #38b6ff 100%);
-        color: #fff;
-        padding: 14px 30px;
-        font-size: 1.1rem;
-        border-radius: 50px;
-        font-weight: 600;
-        border: none;
-        box-shadow: 0 4px 12px rgba(56, 182, 255, 0.4);
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        display: inline-block;
-        text-decoration: none;
-}
-
-    @keyframes fadeOut {
-        0% { opacity: 1; }
-        100% { opacity: 0; visibility: hidden; }
-    }
-  </style>
+  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
@@ -93,7 +43,6 @@
     </div>
   </section>
 
-  
   @if (session('success'))
     <div class="alert-container">
         <div class="alert alert-success auto-hide" id="success-alert">
@@ -115,7 +64,7 @@
     <div class="row g-4">
       <div class="col-md-4">
         <div class="card course-card">
-          <img src="{{ asset('img/UKFlag.png') }}" alt="UK Flag" style="width: 414px; height: 250px; object-fit: cover;">
+          <img src="{{ asset('img/UKFlag.png') }}" alt="UK Flag"  class=".course-card img">
           <div class="card-body">
             <h5><a href="course-detail.html?id=1" class="course-title">Angielski - podstawowy</a></h5>
             <p class="card-text">
@@ -129,7 +78,7 @@
       </div>
       <div class="col-md-4">
         <div class="card course-card">
-          <img src="{{ asset('img/SpainFlag.png') }}" alt="SpainFlag" style="width: 414px; height: 250px; object-fit: cover;">
+          <img src="{{ asset('img/SpainFlag.png') }}" alt="SpainFlag" class=".course-card img">
           <div class="card-body">
             <h5><a href="course-detail.html?id=2" class="course-title">Hiszpański - średniozaawansowany</a></h5>
             <p class="card-text">
@@ -143,7 +92,7 @@
       </div>
       <div class="col-md-4">
         <div class="card course-card">
-          <img src="{{ asset('img/FranceFlag.webp') }}" alt="FrenchFlag" style="width: 414px; height: 250px; object-fit: cover;">
+          <img src="{{ asset('img/FranceFlag.webp') }}" alt="FrenchFlag" class=".course-card img">
           <div class="card-body">
             <h5><a href="course-detail.html?id=3" class="course-title">Francuski - początkujący</a></h5>
             <p class="card-text">
@@ -161,10 +110,6 @@
         </div>
   </div>
   
-  <div class="text-center mb-5">
-    <a href="{{ route('oferta') }}" class="btn btn-primary">Zobacz wszystkie kursy</a>
-  </div>
-
   <div class="container my-5">
     <h3 class="text-center mb-4">Poznaj naszych instruktorów</h3>
 
