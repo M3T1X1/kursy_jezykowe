@@ -22,7 +22,8 @@ class Course extends Model
         'data_zakonczenia',
         'cena',
         'liczba_miejsc',
-        'id_instruktora'
+        'id_instruktora',
+        'zdjecie',
     ];
 
     public function instructor() {

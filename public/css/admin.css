@@ -162,7 +162,6 @@ body {
   .main-content { margin-left: 0; padding: 20px; }
   .sidebar { position: static; width: 100%; min-height: unset; padding: 20px; }
 }
-
 @media (max-width: 768px) {
   .btn-primary:not(.table .btn):not(.btn-action),
   .btn-secondary:not(.table .btn):not(.btn-action) {
@@ -177,26 +176,21 @@ body {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch; 
     white-space: nowrap;
-  }
-  
+  } 
   .table {
     min-width: 800px; 
-  }
-  
+  } 
   .table th,
   .table td {
     white-space: nowrap; 
     font-size: 0.85rem; 
     padding: 0.5rem 0.3rem; 
   }
-  
   /* Ukryj niektóre kolumny na bardzo małych ekranach */
   .table th:nth-child(2), 
   .table td:nth-child(2) {
     display: none;
   }
-
-
 /* Dla bardzo małych ekranów */
 @media (max-width: 576px) {
   .table th:nth-child(5), 

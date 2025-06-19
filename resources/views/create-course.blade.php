@@ -21,7 +21,7 @@
             </div>
         @endif
 
-        <form action="{{ route('kursy.store') }}" method="POST">
+        <form action="{{ route('kursy.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @php $course = null; @endphp
             @include('course-form')
