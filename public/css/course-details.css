@@ -1,0 +1,251 @@
+.course-header {
+    background: linear-gradient(90deg, #4f8cff 0%, #38b6ff 100%);
+    color: #fff;
+    padding: 60px 0;
+    border-radius: 0 0 30px 30px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  /* KARTY - POPRAWIONE DLA DESKTOP */
+  .card {
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    background: white;
+    transition: transform 0.3s;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    max-height: none;
+    min-height: 410px !important;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 28px 28px 20px 28px;
+    flex: 1;
+    justify-content: space-between;
+  }
+  
+  .card-header {
+    padding: 20px 28px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    border-radius: 12px 12px 0 0 !important;
+  }
+  .card .btn {
+    font-size: 1.15rem;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0px; /* Jeszcze mniej odstępu */
+    align-self: stretch;
+  }
+  
+  
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 28px;
+  }
+  
+  /* KARTA INSTRUKTORA - POPRAWIONA */
+  .instructor-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    background: white;
+    transition: transform 0.3s;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .instructor-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .instructor-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  
+  .instructor-card h6 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* USUŃ POWTARZAJĄCE SIĘ INFORMACJE */
+  .instructor-card .text-muted {
+    display: none;
+  }
+  
+  /* LAYOUT DESKTOP - SZERSZE KARTY I JEDNAKOWA WYSOKOŚĆ */
+  @media (min-width: 768px) {
+    .col-md-4 {
+      flex: 0 0 45%;
+      max-width: 45%;
+      min-width: 480px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .col-md-8 {
+      flex: 0 0 53%;
+      max-width: 53%;
+    }
+    
+    .card, .instructor-card {
+      height: 100%;
+      min-height: 320px;
+      width: 100%;
+    }
+    
+    .card-body {
+      padding: 32px;
+      font-size: 1.2rem;
+      flex: 1;
+    }
+    
+    .instructor-card {
+      padding: 32px;
+      justify-content: space-between;
+    }
+  }
+  
+  /* LAYOUT DLA BARDZO SZEROKICH EKRANÓW */
+  @media (min-width: 1200px) {
+    .col-md-4 {
+      flex: 0 0 42%;
+      max-width: 42%;
+      min-width: 520px;
+    }
+    
+    .col-md-8 {
+      flex: 0 0 56%;
+      max-width: 56%;
+    }
+    
+    .card, .instructor-card {
+      min-height: 350px;
+    }
+    
+    .card-body {
+      padding: 36px;
+      font-size: 1.25rem;
+    }
+    
+    .instructor-card {
+      padding: 36px;
+    }
+    
+    .instructor-img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+  
+  /* RESPONSYWNOŚĆ - TABLET */
+  @media (max-width: 900px) and (min-width: 601px) {
+    .course-header {
+      padding: 40px 0;
+    }
+    
+    .card, .instructor-card {
+      padding: 24px;
+      min-height: 280px;
+    }
+    
+    .col-md-4 {
+      flex: 0 0 48%;
+      max-width: 48%;
+      min-width: 400px;
+    }
+    
+    .col-md-8 {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
+  
+  /* RESPONSYWNOŚĆ - MOBILE */
+  @media (max-width: 600px) {
+    .course-header {
+      padding: 30px 0 20px 0;
+      border-radius: 0 0 16px 16px;
+    }
+    
+    .course-header h1 {
+      font-size: 1.5rem;
+    }
+    
+    .course-header .d-flex {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .card, .instructor-card {
+      padding: 16px;
+      margin-bottom: 1.5rem;
+      min-height: auto;
+    }
+    
+    .card-body {
+      padding: 16px;
+      font-size: 1rem;
+    }
+    
+    .instructor-img {
+      width: 60px;
+      height: 60px;
+    }
+    
+    .instructor-card h5 {
+      font-size: 1.1rem;
+    }
+    
+    .instructor-card h6 {
+      font-size: 1rem;
+    }
+  }
+  
+  /* PRZYCISKI RESPONSYWNE */
+  .d-flex.gap-3 {
+    gap: 1rem;
+  }
+  
+  @media (max-width: 600px) {
+    .d-flex.gap-3 {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .btn-lg {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+  }
+  
+/* POPRAWKI DLA PRZYCISKÓW W KARTACH */
+
+  
+  /* POPRAWKA DLA LABELA INSTRUKTORA */
+  .instructor-card > h5 {
+    background-color: #0d6efd;
+    color: white;
+    padding: 16px 28px;
+    border-radius: 12px 12px 0 0;
+    margin: -28px -28px 20px -28px;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }

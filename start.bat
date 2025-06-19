@@ -1,26 +1,35 @@
+@echo off
+setlocal enabledelayedexpansion
+
 echo [1/5] Sprawdzanie wymagan systemowych...
 
 echo.
 echo Sprawdzanie PHP...
-php --version 2>nul | findstr "PHP" && echo PHP dostepny || (
+php --version 2>nul | findstr "PHP" >nul && (
+    echo PHP dostepny
+) || (
     echo BLAD: PHP nie jest zainstalowane
-    pause
+    pause >nul
     exit /b 1
 )
 
 echo.
 echo Sprawdzanie Composer...
-composer --version 2>nul | findstr "Composer" && echo Composer dostepny || (
+composer --version 2>nul | findstr "Composer" >nul && (
+    echo Composer dostepny
+) || (
     echo BLAD: Composer nie jest zainstalowany
-    pause
+    pause >nul
     exit /b 1
 )
 
 echo.
 echo Sprawdzanie PowerShell...
-powershell -Command "Write-Host 'PowerShell dziala'" 2>nul && echo PowerShell dostepny || (
+powershell -Command "Write-Host 'PowerShell dziala'" >nul 2>&1 && (
+    echo PowerShell dostepny
+) || (
     echo BLAD: PowerShell nie jest dostepny
-    pause
+    pause >nul
     exit /b 1
 )
 
@@ -74,16 +83,16 @@ echo Zaleznosci Composer zostaly zainstalowane
 
 echo.
 echo Czyszczenie cache aplikacji...
-call php artisan config:clear
-call php artisan cache:clear  
-call php artisan route:clear
-call php artisan view:clear
+call php artisan config:clear >nul 2>&1
+call php artisan cache:clear >nul 2>&1
+call php artisan route:clear >nul 2>&1
+call php artisan view:clear >nul 2>&1
 echo Cache wyczyszczony
 
 echo.
-echo Generowanie cache konfiguracji...
-call php artisan config:cache
-echo Cache konfiguracji zostal wygenerowany
+echo Czyszczenie cache po konfiguracji bazy...
+call php artisan config:clear >nul 2>&1
+call php artisan cache:clear >nul 2>&1
 
 echo.
 echo [4/5] Konfiguracja bazy danych...
@@ -122,6 +131,18 @@ echo UWAGA: Upewnij sie, ze PostgreSQL jest uruchomiony
 echo i baza danych 'language_courses' istnieje
 echo.
 pause
+
+
+
+echo.
+echo Sprawdzanie polaczenia z baza danych...
+php artisan migrate:status >nul 2>&1
+if %errorlevel% neq 0 (
+    echo BLAD: Nie mozna polaczyc sie z baza danych
+    echo Sprawdz czy PostgreSQL jest uruchomiony i baza istnieje
+    pause
+    exit /b 1
+)
 
 echo.
 echo Uruchamianie migracji bazy danych...

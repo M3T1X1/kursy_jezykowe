@@ -25,7 +25,9 @@ Route::get('/test-db', function () {
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+// Oferta kursów
+Route::get('/oferta', [PublicCourseController::class, 'index'])->name('oferta');
+Route::get('/kurs/{id}', [PublicCourseController::class, 'show'])->name('kurs.show');
 //rezerwacja
 Route::get('/rezerwacja', [ReservationController::class, 'create'])->name('rezerwacja.create');
 Route::post('/rezerwacja', [ReservationController::class, 'store'])->name('rezerwacja.submit');
@@ -56,14 +58,14 @@ Route::get('/app', function () {
 });
 
 // Panel admina
-    Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+Route::middleware(['auth', 'admin'])->group(function () {
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
     //Route::get('/dashboard', function () {
     //    return view('dashboard');
     //});
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
     // Klienci
@@ -73,11 +75,11 @@ Route::get('/app', function () {
     Route::get('/klienci/{id_klienta}/edit', [KlientController::class, 'edit'])->name('klienci.edit');
     Route::put('/klienci/{id_klienta}', [KlientController::class, 'update'])->name('klienci.update');
 
-    // Kursy
+// Kursy
 
-    Route::resource('kursy', CourseController::class);
-// Oferta kursów
-Route::get('/oferta', [PublicCourseController::class, 'index'])->name('oferta');
+Route::resource('kursy', CourseController::class);
+
+
 
 
     // Transakcje i zniżki

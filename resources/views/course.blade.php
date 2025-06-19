@@ -4,79 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kursy - Panel Administratora</title>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-  <style>
-   body {
-  background: #f4f6fa;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.sidebar {
-  width: 250px; /* zmienione z 240px dla spójności */
-  background: #343a40; /* ciemne tło */
-  color: #fff;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  padding: 30px 0; /* więcej paddingu */
-  box-shadow: 2px 0 10px rgba(0,0,0,0.05);
-  z-index: 1000;
-  transition: all 0.3s;
-}
-
-.sidebar a {
-  padding: 12px 30px;
-  margin: 4px 16px;
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  transition: all 0.2s;
-}
-
-.sidebar a:hover {
-  background: #495057;
-  color: #fff;
-}
-
-.sidebar i {
-  margin-right: 10px;
-  font-size: 1.1rem;
-}
-
-.main-content {
-  margin-left: 250px;
-  padding: 40px 30px;
-  transition: all 0.3s;
-}
-
-.admin-title {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #2c3e50;
-}
-
-.btn-action i {
-  pointer-events: none;
-}
-
-@media (max-width: 991px) {
-  .main-content {
-    margin-left: 0;
-    padding: 20px;
-  }
-  .sidebar {
-    position: static;
-    width: 100%;
-    min-height: unset;
-    padding: 20px;
-  }
-}
-
-  </style>
+  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 </head>
 <body>
   <!-- Sidebar -->

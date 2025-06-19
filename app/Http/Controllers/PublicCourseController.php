@@ -11,4 +11,10 @@ class PublicCourseController extends Controller
         $courses = Course::all();
         return view('oferta', ['courses' => $courses]);
     }
+    
+    public function show($id)
+    {
+    $course = Course::findOrFail($id);
+    return view('course-details', compact('course'));
+    }
 }

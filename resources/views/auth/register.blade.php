@@ -3,69 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Rejestracja</title>
-    <style>
-        body {
-            background: #f7f7f7;
-            font-family: Arial, sans-serif;
-        }
-        .register-container {
-            max-width: 430px;
-            margin: 40px auto;
-            padding: 28px 24px 20px 24px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: #fff;
-            box-shadow: 0 2px 8px #eee;
-        }
-        .register-container h2 {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        .form-group {
-            margin-bottom: 16px;
-        }
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
-        input[type="email"],
-        input[type="password"],
-        input[type="text"],
-        input[type="file"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 15px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            margin-top: 8px;
-        }
-        .links {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .links a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .alert {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 8px 12px;
-            border-radius: 4px;
-            margin-bottom: 16px;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/form.css') }}">
 </head>
 <body>
 <div class="register-container">
