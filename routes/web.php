@@ -81,6 +81,7 @@ Route::resource('kursy', CourseController::class);
 
 
 
+
     // Transakcje i zniżki
     Route::get('/admin/transakcje', [AdminController::class, 'showTransactions'])->name('admin.transakcje');
     Route::get('/transakcje', [TransakcjeController::class, 'index'])->name('transakcje');

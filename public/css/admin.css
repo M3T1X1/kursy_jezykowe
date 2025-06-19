@@ -158,8 +158,55 @@ body {
   .tab-pane.active { display: block; }
   
   /* Responsywność */
-  @media (max-width: 991px) {
-    .main-content { margin-left: 0; padding: 20px; }
-    .sidebar { position: static; width: 100%; min-height: unset; padding: 20px; }
+@media (max-width: 991px) {
+  .main-content { margin-left: 0; padding: 20px; }
+  .sidebar { position: static; width: 100%; min-height: unset; padding: 20px; }
+}
+
+@media (max-width: 768px) {
+  .btn-primary:not(.table .btn):not(.btn-action),
+  .btn-secondary:not(.table .btn):not(.btn-action) {
+    padding: 0.3rem 0.6rem !important; 
+    font-size: 0.85rem !important;
+    border-radius: 1.25rem !important;
+    max-width: 8rem;
+  }
+}
+  /* Poziomy scroll dla tabeli */
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch; 
+    white-space: nowrap;
   }
   
+  .table {
+    min-width: 800px; 
+  }
+  
+  .table th,
+  .table td {
+    white-space: nowrap; 
+    font-size: 0.85rem; 
+    padding: 0.5rem 0.3rem; 
+  }
+  
+  /* Ukryj niektóre kolumny na bardzo małych ekranach */
+  .table th:nth-child(2), 
+  .table td:nth-child(2) {
+    display: none;
+  }
+
+
+/* Dla bardzo małych ekranów */
+@media (max-width: 576px) {
+  .table th:nth-child(5), 
+  .table td:nth-child(5),
+  .table th:nth-child(6), 
+  .table td:nth-child(6) {
+    display: none;
+  }
+  
+  .table {
+    min-width: 600px; 
+  }
+}

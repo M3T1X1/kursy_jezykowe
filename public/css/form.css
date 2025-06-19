@@ -1,226 +1,203 @@
+/* Podstawowe style body - zmienione na styl jak w instruktorach */
 body {
-    background: #f7f7f7;
-    font-family: Arial, sans-serif;
-    min-height: 100vh;
+  background: #f4f6fa !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  min-height: 100vh;
+  padding: 40px 30px !important;
+}
+
+/* Kontener formularza - dostosowany do stylu instruktorów */
+.form-container, .register-container, .edit-container, .container {
+  max-width: 700px !important; /* Zmniejszone z 900px */
+  min-width: 320px;
+  margin: auto !important; /* Zmienione z 48px auto */
+  padding: 2rem !important; /* Używamy rem jak Bootstrap */
+  border: none !important; /* Usunięte border */
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important; /* Bootstrap shadow-sm */
+  font-size: 1rem;
+}
+
+/* Logo dla rezerwacji */
+.logo {
+  display: block !important;
+  margin: 0 auto 1.5rem auto !important;
+}
+
+/* Nagłówek */
+.form-container h2,
+.register-container h2,
+.edit-container h2,
+.container h2,
+.booking-title {
+  color: #2c3e50 !important;
+  margin-bottom: 1.5rem !important; /* Bootstrap mb-4 */
+  font-weight: 700 !important;
+  font-size: 1.75rem !important; /* Zmniejszone z 2.1rem */
+  text-align: center !important; /* Center dla rezerwacji */
+}
+
+/* Nagłówki formularzy CRUD - wyrównane do lewej */
+.container h2:not(.booking-title) {
+  text-align: left !important;
+}
+
+/* Grupa pól Bootstrap */
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+/* Labels - dostosowane do Bootstrap */
+.form-label {
+  display: block !important;
+  margin-bottom: 0.5rem !important;
+  font-weight: 600 !important;
+  color: #34495e !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Pola formularza - nadpisanie Bootstrap */
+.form-control,
+.form-select {
+  width: 100% !important;
+  padding: 0.375rem 0.75rem !important; /* Bootstrap padding */
+  border: 1px solid #dee2e6 !important; /* Bootstrap border */
+  border-radius: 0.375rem !important; /* Bootstrap border-radius */
+  font-size: 1rem !important;
+  box-sizing: border-box !important;
+  background: #fff !important;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #86b7fe !important; /* Bootstrap focus color */
+  outline: 0 !important;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important; /* Bootstrap focus shadow */
+  background: #fff !important;
+}
+
+/* Checkbox styles */
+.form-check-input {
+  margin-top: 0.25rem !important;
+}
+
+.form-check-label {
+  font-weight: 400 !important;
+  color: #34495e !important;
+}
+
+/* Kontener przycisków - pełna szerokość, jeden pod drugim */
+.mb-3:has(button), .mb-3:has(.btn) {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+/* Przyciski - pełna szerokość na wszystkich urządzeniach */
+.btn-primary,
+.btn-secondary,
+.btn-wroc,
+button[type="submit"],
+input[type="submit"] {
+  width: 100% !important;
+  padding: 0.375rem 0.75rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  border-radius: 0.375rem !important;
+  border: 1px solid transparent !important;
+  text-decoration: none !important;
+  display: block !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+  margin: 0 !important; /* Usuwamy margin-left */
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+/* Kolory przycisków */
+.btn-primary,
+button[type="submit"],
+input[type="submit"] {
+  background-color: #0d6efd !important;
+  border-color: #0d6efd !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover,
+button[type="submit"]:hover,
+input[type="submit"]:hover {
+  background-color: #0b5ed7 !important;
+  border-color: #0a58ca !important;
+  color: #fff !important;
+}
+
+.btn-secondary,
+.btn-wroc {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+  color: #fff !important;
+}
+
+.btn-secondary:hover,
+.btn-wroc:hover,
+.btn-wroc:focus {
+  background-color: #5c636a !important;
+  border-color: #565e64 !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+/* Alerty */
+.alert {
+  background: #f8d7da !important;
+  color: #721c24 !important;
+  padding: 12px 18px !important;
+  border-radius: 6px !important;
+  margin-bottom: 20px !important;
+  font-size: 1.05em !important;
+  border: 1px solid #f5c6cb !important;
+}
+
+.alert-success {
+  background: #d1edff !important;
+  color: #0c5460 !important;
+  border: 1px solid #b8daff !important;
+}
+
+.alert ul {
+  margin: 0 !important;
+  padding-left: 1.2rem !important;
+}
+
+/* Responsywność - dostosowana do Bootstrap */
+@media (max-width: 768px) {
+  body {
+      padding: 20px 15px !important;
   }
   
-  /* Kontener formularza */
   .form-container, .register-container, .edit-container, .container {
-    max-width: 900px;
-    min-width: 320px;
-    margin: 48px auto;
-    padding: 40px 32px 32px 32px;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 2px 16px rgba(44, 62, 80, 0.07);
-    font-size: 1rem; /* DOMYŚLNY ROZMIAR DLA DESKTOPU */
+      max-width: 100% !important;
+      padding: 1.5rem !important;
+      margin: 0 !important;
   }
   
-  /* Nagłówek */
-  .form-container h2,
-  .register-container h2,
-  .edit-container h2,
-  .container h2 {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 32px;
-    font-weight: 700;
-    font-size: 2.1rem;
+  .container h2,
+  .booking-title {
+      font-size: 1.5rem !important;
+      margin-bottom: 1rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-container, .register-container, .edit-container, .container {
+      padding: 1rem !important;
   }
   
-  /* Grupa pól */
-  .form-group {
-    margin-bottom: 24px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #34495e;
-    letter-spacing: 0.5px;
-  }
-  
-  /* Pola formularza */
-  input[type="email"],
-  input[type="password"],
-  input[type="text"],
-  input[type="number"],
-  input[type="date"],
-  input[type="file"],
-  select,
-  textarea {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1.1em;
-    box-sizing: border-box;
-    margin-bottom: 6px;
-    background: #fafbfc;
-    transition: border-color 0.2s;
-  }
-  
-  input:focus,
-  select:focus,
-  textarea:focus {
-    border-color: #3498db;
-    outline: none;
-    background: #fff;
-  }
-  
-  /* Przyciski */
-  button,
-  input[type="submit"] {
-    width: 100%;
-    padding: 14px 0;
-    background: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-size: 1.15em;
-    font-weight: 700;
-    margin-top: 12px;
-    cursor: pointer;
-    transition: background 0.2s;
-    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.07);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-  
-  button:hover,
-  input[type="submit"]:hover,
-  .btn-primary:hover {
-    background: #2980b9;
-  }
-  
-  /* Zielony przycisk (jeśli używasz) */
-  .btn-success {
-    background-color: #2ecc71;
-    color: white;
-  }
-  .btn-success:hover {
-    background-color: #27ae60;
-  }
-  
-  /* Szary przycisk powrotu */
-  .btn-wroc {
-    background-color: #6c757d;
-    color: #fff !important;
-    font-weight: 700;
-    border-radius: 6px;
-    padding: 0.8rem 1.5rem;
-    font-size: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    border: none;
-    transition: background 0.2s;
-  }
-  .btn-wroc:hover, .btn-wroc:focus {
-    background-color: #5a6268;
-    color: #fff !important;
-    text-decoration: none;
-  }
-  
-  /* Szary przycisk (outline, np. anuluj) */
-  .btn-secondary {
-    background-color: #95a5a6;
-    color: white;
-    margin-left: 0.5rem;
-  }
-  .btn-secondary:hover {
-    background-color: #7f8c8d;
-  }
-  
-  /* Duże przyciski */
-  .btn-lg {
-    padding: 0.8rem 1.5rem;
-    font-size: 1.2em;
-    border-radius: 6px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-  .d-flex.flex-column.gap-3 {
-    gap: 1rem; /* odstęp 1 rem między elementami w kolumnie */
-  }
-  
-  /* Alternatywnie, jeśli gap nie działa wszędzie: */
-  .d-flex.flex-column > *:not(:last-child) {
-    margin-bottom: 1rem;
-  }
-  
-  /* Akcje formularza */
-  .form-actions, .d-flex.justify-content-between {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  
-  /* Linki pod formularzem */
-  .links {
-    margin-top: 24px;
-    text-align: center;
-  }
-  .links a {
-    color: #3498db;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.2s;
-  }
-  .links a:hover {
-    color: #2980b9;
-    text-decoration: underline;
-  }
-  
-  /* Alerty */
-  .alert {
-    background: #f8d7da;
-    color: #721c24;
-    padding: 12px 18px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    font-size: 1.05em;
-    border: 1px solid #f5c6cb;
-  }
-  
-  /* Responsywność */
-  @media (max-width: 900px) {
-    .form-container, .register-container, .edit-container, .container {
-      max-width: 98vw;
-      padding: 24px 8px 16px 8px;
-    }
-    .form-actions, .d-flex.justify-content-between {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.5rem;
-    }
-    button, input[type="submit"], .btn-wroc {
-      font-size: 1em;
-      padding: 12px 0;
-    }
-  }
-  
-  @media (max-width: 600px) {
-    body,
-    .form-label,
-    .form-control,
-    .form-select,
-    .form-check-label,
-    button,
-    input[type="submit"],
-    .btn,
-    .btn-wroc {
+  .form-control,
+  .form-select,
+  .form-label,
+  .btn {
       font-size: 1rem !important;
-    }
   }
+}
