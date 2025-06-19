@@ -62,54 +62,35 @@
   <div class="container mb-5">
     <h2 class="mb-4">Dostępne kursy</h2>
     <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card course-card">
-          <img src="{{ asset('img/UKFlag.png') }}" alt="UK Flag"  class=".course-card img">
-          <div class="card-body">
-            <h5><a href="course-detail.html?id=1" class="course-title">Angielski - podstawowy</a></h5>
-            <p class="card-text">
-              Instruktor: <a href="instructor-detail.html?id=1" class="instructor-name">Jan Kowalski</a><br>
-              Start: 2025-06-01<br>
-              Cena: 1200 PLN
-            </p>
-            <a href="{{ route('rezerwacja.create', ['course' => 1]) }}" class="btn btn-primary">Zapisz się na kurs</a>
-          </div>
+        @foreach($kursy as $kurs)
+        <div class="col-md-4">
+            <div class="card course-card h-100 d-flex flex-column">
+                <img src="{{ $kurs->zdjecie_url }}" alt="{{ $kurs->jezyk }} - {{ $kurs->poziom }}" class="course-card img">
+                <div class="card-body d-flex flex-column">
+                    <h5><a href="course-detail.html?id={{ $kurs->id_kursu }}" class="course-title">{{ $kurs->jezyk }} - {{ $kurs->poziom }}</a></h5>
+                    <p class="card-text flex-grow-1">
+                        @if($kurs->instructor)
+                            Instruktor: <a href="instructor-detail.html?id={{ $kurs->instructor->id }}" class="instructor-name">{{ $kurs->instructor->imie }} {{ $kurs->instructor->nazwisko }}</a><br>
+                        @else
+                            Instruktor: Brak przypisanego<br>
+                        @endif
+                        Start: {{ $kurs->data_rozpoczecia->format('Y-m-d') }}<br>
+                        Cena: {{ number_format($kurs->cena, 0, ',', ' ') }} PLN
+                    </p>
+                    <div class="mt-auto">
+                        <a href="{{ route('rezerwacja.create', ['course' => $kurs->id_kursu]) }}" class="btn btn-primary w-100">Zapisz się na kurs</a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card course-card">
-          <img src="{{ asset('img/SpainFlag.png') }}" alt="SpainFlag" class=".course-card img">
-          <div class="card-body">
-            <h5><a href="course-detail.html?id=2" class="course-title">Hiszpański - średniozaawansowany</a></h5>
-            <p class="card-text">
-              Instruktor: <a href="instructor-detail.html?id=2" class="instructor-name">Maria Nowak</a><br>
-              Start: 2025-06-15<br>
-              Cena: 1350 PLN
-            </p>
-            <a href="{{ route('rezerwacja.create', ['course' => 2]) }}" class="btn btn-primary">Zapisz się na kurs</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card course-card">
-          <img src="{{ asset('img/FranceFlag.webp') }}" alt="FrenchFlag" class=".course-card img">
-          <div class="card-body">
-            <h5><a href="course-detail.html?id=3" class="course-title">Francuski - początkujący</a></h5>
-            <p class="card-text">
-              Instruktor: <a href="instructor-detail.html?id=3" class="instructor-name">Piotr Wiśniewski</a><br>
-              Start: 2025-07-01<br>
-              Cena: 1100 PLN
-            </p>
-            <a href="{{ route('rezerwacja.create', ['course' => 3]) }}" class="btn btn-primary">Zapisz się na kurs</a>
-          </div>
-        </div>
-      </div>
+        @endforeach
     </div>
-        <div class="text-center mb-5 mt-5">
-            <a href="{{ route ('oferta') }}" class ="btn btn-custom"> Zobacz wszystkie kursy</a>
-        </div>
-  </div>
-  
+    <div class="text-center mb-5 mt-5">
+        <a href="{{ route('oferta') }}" class="btn btn-custom">Zobacz wszystkie kursy</a>
+    </div>
+</div>
+<
+
   <div class="container my-5">
     <h3 class="text-center mb-4">Poznaj naszych instruktorów</h3>
 

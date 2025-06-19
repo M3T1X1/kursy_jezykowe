@@ -1,7 +1,5 @@
 <?php
-
 namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +24,7 @@ class KursyTableSeeder extends Seeder
                 'data_zakonczenia' => '2025-08-31',
                 'liczba_miejsc' => 10,
                 'id_instruktora' => $instruktorzy[0],
+                'zdjecie' => 'courses/angielski-zaawansowany.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -37,6 +36,7 @@ class KursyTableSeeder extends Seeder
                 'data_zakonczenia' => '2025-09-30',
                 'liczba_miejsc' => 15,
                 'id_instruktora' => $instruktorzy[1],
+                'zdjecie' => 'courses/hiszpanski-sredniozaawansowany.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -48,10 +48,10 @@ class KursyTableSeeder extends Seeder
                 'data_zakonczenia' => '2025-10-31',
                 'liczba_miejsc' => 8,
                 'id_instruktora' => $instruktorzy[2],
+                'zdjecie' => 'courses/francuski-poczatkujacy.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ]);
-        
     }
 }

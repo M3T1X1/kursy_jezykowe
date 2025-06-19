@@ -6,56 +6,10 @@
   <title>Dodaj Instruktora</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-  <style>
-    body {
-      background: #f4f6fa;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    .sidebar {
-      min-height: 100vh;
-      background: #343a40;
-      color: #fff;
-      padding: 30px 0;
-      position: fixed;
-      width: 250px;
-      top: 0;
-      left: 0;
-      z-index: 100;
-      transition: all 0.3s;
-    }
-    .sidebar .nav-link {
-      color: rgba(255, 255, 255, 0.8);
-      padding: 12px 30px;
-      display: flex;
-      align-items: center;
-      margin: 4px 16px;
-      border-radius: 6px;
-      transition: all 0.2s;
-    }
-    .sidebar .nav-link i {
-      margin-right: 10px;
-      font-size: 1.1rem;
-    }
-    .sidebar .nav-link.active, .sidebar .nav-link:hover {
-      background: #495057;
-      color: #fff;
-    }
-    .main-content {
-      margin-left: 250px;
-      padding: 40px 30px;
-      transition: all 0.3s;
-    }
-    .admin-title {
-      font-weight: 600;
-      color: #2c3e50;
-    }
-    @media (max-width: 991px) {
-      .main-content { margin-left: 0; }
-      .sidebar { position: static; width: 100%; min-height: unset; }
-    }
-  </style>
+  <link rel="stylesheet" href="{{ asset('css/admin.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/form.css') }}" />
 </head>
-<body>
+<body style="padding: 0 !important;">
   <!-- Sidebar -->
   <div class="sidebar">
     <h4 class="text-center mb-4 py-2">Szkoła Językowa</h4>
@@ -88,71 +42,74 @@
   </div>
 
   <div class="main-content">
-    <h2 class="admin-title mb-4">Dodaj Instruktora</h2>
+    <div class="container">
+      <h2 class="admin-title mb-4">Dodaj Instruktora</h2>
 
-    @if ($errors->any())
-      <div class="alert alert-danger">
-        <ul class="mb-0">
-          @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-    @endif
+      @if ($errors->any())
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
 
-    <form action="{{ url('instruktorzy/store') }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ url('instruktorzy/store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
-      @csrf
-      <div class="mb-3">
-        <label for="imie" class="form-label">Imię</label>
-        <input type="text" class="form-control" id="imie" name="imie" value="{{ old('imie') }}" required />
-      </div>
+        <div class="mb-3">
+          <label for="imie" class="form-label">Imię</label>
+          <input type="text" name="imie" id="imie" class="form-control" value="{{ old('imie') }}" required>
+        </div>
 
-      <div class="mb-3">
-        <label for="nazwisko" class="form-label">Nazwisko</label>
-        <input type="text" class="form-control" id="nazwisko" name="nazwisko" value="{{ old('nazwisko') }}" required />
-      </div>
+        <div class="mb-3">
+          <label for="nazwisko" class="form-label">Nazwisko</label>
+          <input type="text" name="nazwisko" id="nazwisko" class="form-control" value="{{ old('nazwisko') }}" required>
+        </div>
 
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required />
-      </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
+        </div>
 
-      <div class="mb-3">
-        <label for="jezyk" class="form-label">Specjalizacja (język)</label>
-        <select id="jezyk" name="jezyk" class="form-select" required>
-          <option value="" disabled selected>Wybierz język</option>
-          <option value="Angielski" {{ old('jezyk') == 'Angielski' ? 'selected' : '' }}>Angielski</option>
-          <option value="Niemiecki" {{ old('jezyk') == 'Niemiecki' ? 'selected' : '' }}>Niemiecki</option>
-          <option value="Hiszpański" {{ old('jezyk') == 'Hiszpański' ? 'selected' : '' }}>Hiszpański</option>
-          <option value="Francuski" {{ old('jezyk') == 'Francuski' ? 'selected' : '' }}>Francuski</option>
-        </select>
-      </div>
+        <div class="mb-3">
+          <label for="jezyk" class="form-label">Specjalizacja (język)</label>
+          <select name="jezyk" id="jezyk" class="form-select" required>
+            <option value="" disabled selected>Wybierz język</option>
+            <option value="Angielski" {{ old('jezyk') == 'Angielski' ? 'selected' : '' }}>Angielski</option>
+            <option value="Niemiecki" {{ old('jezyk') == 'Niemiecki' ? 'selected' : '' }}>Niemiecki</option>
+            <option value="Hiszpański" {{ old('jezyk') == 'Hiszpański' ? 'selected' : '' }}>Hiszpański</option>
+            <option value="Francuski" {{ old('jezyk') == 'Francuski' ? 'selected' : '' }}>Francuski</option>
+          </select>
+        </div>
 
-      <div class="mb-3">
-        <label for="poziom" class="form-label">Poziom</label>
-        <select id="poziom" name="poziom" class="form-select" required>
+        <div class="mb-3">
+          <label for="poziom" class="form-label">Poziom</label>
+          <select name="poziom" id="poziom" class="form-select" required>
             <option value="" disabled selected>Wybierz poziom</option>
             <option value="Początkujący" {{ old('poziom') == 'Początkujący' ? 'selected' : '' }}>Początkujący</option>
             <option value="Średniozaawansowany" {{ old('poziom') == 'Średniozaawansowany' ? 'selected' : '' }}>Średniozaawansowany</option>
             <option value="Zaawansowany" {{ old('poziom') == 'Zaawansowany' ? 'selected' : '' }}>Zaawansowany</option>
-        </select>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="placa" class="form-label">Płaca (zł/h)</label>
+          <input type="number" step="0.01" min="0" name="placa" id="placa" class="form-control" value="{{ old('placa') }}" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="zdjecie" class="form-label">Zdjęcie profilowe (opcjonalne)</label>
+          <input type="file" name="zdjecie" id="zdjecie" class="form-control" accept="image/*">
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+          <a href="{{ url('instruktorzy') }}" class="btn btn-secondary" style="width: auto !important;">Anuluj</a>
+          <button type="submit" class="btn btn-primary" style="width: auto !important;">Dodaj Instruktora</button>
+        </div>
+      </form>
     </div>
-
-
-      <div class="mb-3">
-        <label for="placa" class="form-label">Płaca (zł/h)</label>
-        <input type="number" step="0.01" min="0" class="form-control" id="placa" name="placa" value="{{ old('placa') }}" required />
-      </div>
-
-      <div class="mb-3">
-        <label for="zdjecie" class="form-label">Zdjęcie profilowe</label>
-        <input type="file" class="form-control" id="zdjecie" name="zdjecie" accept="image/*" />
-      </div>
-
-      <button type="submit" class="btn btn-primary float-end">Dodaj Instruktora</button>
-      <a href="{{ url('instruktorzy') }}" class="btn btn-secondary">Anuluj</a>
-    </form>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
