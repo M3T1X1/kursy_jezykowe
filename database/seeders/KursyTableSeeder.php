@@ -7,7 +7,7 @@ class KursyTableSeeder extends Seeder
 {
     public function run()
     {
-        // Pobierz listę instruktorów z bazy, żeby znać ich ID
+        
         $instruktorzy = DB::table('instruktorzy')->get();
 
         if ($instruktorzy->isEmpty()) {
@@ -15,7 +15,7 @@ class KursyTableSeeder extends Seeder
             return;
         }
 
-        // Przygotuj dane kursów
+        
         $kursyData = [
             [
                 'cena' => 1500.00,
@@ -25,7 +25,7 @@ class KursyTableSeeder extends Seeder
                 'data_zakonczenia' => '2025-08-31',
                 'liczba_miejsc' => 10,
                 'id_instruktora' => $instruktorzy[0]->id,
-                'zdjecie' => 'courses/UKFlag.png',
+                'zdjecie' => 'img/flags/UKFlag.png',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -37,7 +37,7 @@ class KursyTableSeeder extends Seeder
                 'data_zakonczenia' => '2025-09-30',
                 'liczba_miejsc' => 15,
                 'id_instruktora' => $instruktorzy[1]->id,
-                'zdjecie' => 'courses/SpainFlag.png',
+                'zdjecie' => 'img/flags/SpainFlag.png',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -49,13 +49,13 @@ class KursyTableSeeder extends Seeder
                 'data_zakonczenia' => '2025-10-31',
                 'liczba_miejsc' => 8,
                 'id_instruktora' => $instruktorzy[2]->id,
-                'zdjecie' => 'courses/FranceFlag.webp',
+                'zdjecie' => 'img/flags/FranceFlag.webp',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ];
-
-        // Dodaj denormalizowane dane instruktorów do każdego kursu
+        
+       
         foreach ($kursyData as &$kurs) {
             $instruktor = $instruktorzy->firstWhere('id', $kurs['id_instruktora']);
 
@@ -70,7 +70,7 @@ class KursyTableSeeder extends Seeder
             }
         }
 
-        // Wstaw kursy do bazy
+        
         DB::table('kursy')->insert($kursyData);
     }
 }

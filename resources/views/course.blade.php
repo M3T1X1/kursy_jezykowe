@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
   <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
   <style>
-    /* Wyśrodkowanie tekstu w komórkach tabeli */
     #coursesTable td {
       vertical-align: middle;
     }
@@ -39,6 +38,36 @@
         <i class="bi bi-plus-lg"></i> Dodaj kurs
       </a>
     </div>
+
+    <!-- Komunikaty sukcesu i błędów -->
+    @if(session('success'))
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-2"></i>
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
+
+    @if(session('error'))
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
+
+    @if($errors->any())
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <strong>Wystąpiły błędy:</strong>
+        <ul class="mb-0 mt-2">
+          @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
 
     <!-- Filtry -->
     <div class="row mb-4 filters">
@@ -93,7 +122,7 @@
             </td>
             <td>{{ \Carbon\Carbon::parse($course->data_rozpoczecia)->format('Y-m-d') }}</td>
             <td>{{ \Carbon\Carbon::parse($course->data_zakonczenia)->format('Y-m-d') }}</td>
-            <td>{{ $course->cena }}</td>
+            <td>{{ $course->cena }} zł</td>
             <td>{{ $course->liczba_miejsc }}</td>
             <td>
               <div class="d-flex gap-1">
@@ -101,13 +130,21 @@
                   <i class="bi bi-pencil"></i>
                 </a>
 
-                <form action="{{ route('kursy.destroy', $course->id_kursu) }}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć ten kurs?')">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-sm btn-outline-danger" title="Usuń">
+                @if(isset($course->canDelete) && $course->canDelete)
+                  <form action="{{ route('kursy.destroy', $course->id_kursu) }}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć ten kurs?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Usuń">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </form>
+                @else
+                  <button type="button" class="btn btn-sm btn-outline-danger" 
+                          onclick="showDeleteWarning({{ $course->id_kursu }})" 
+                          title="Kliknij aby zobaczyć dlaczego nie można usunąć">
                     <i class="bi bi-trash"></i>
                   </button>
-                </form>
+                @endif
               </div>
             </td>
           </tr>
@@ -117,71 +154,106 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
-      const inputJezyk = document.querySelector('input[name="jezyk"]');
-      const inputPoziom = document.querySelector('input[name="poziom"]');
-      const inputCenaMax = document.querySelector('input[name="cena_max"]');
-      const inputInstruktor = document.querySelector('input[name="instruktor"]');
-      const inputMiejsca = document.querySelector('input[name="miejsca"]');
-
-      const table = document.getElementById('coursesTable');
-      const rows = table.querySelectorAll('tbody tr');
-
-      if (!table) {
-          console.error('Tabela coursesTable nie znaleziona');
-          return;
+    function showDeleteWarning(courseId) {
+      // Znajdź kurs w danych (możesz też przekazać dane przez data-attributes)
+      const course = @json($courses->keyBy('id_kursu'));
+      const selectedCourse = course[courseId];
+      
+      let message = 'Nie można usunąć tego kursu z następujących powodów:\n\n';
+      
+      // Sprawdź czy kurs ma aktywne transakcje
+      if (selectedCourse.transakcje && selectedCourse.transakcje.length > 0) {
+        const activeTransactions = selectedCourse.transakcje.filter(t => 
+          t.status === 'Oczekuje' || t.status === 'Opłacone'
+        );
+        if (activeTransactions.length > 0) {
+          message += `• Kurs ma ${activeTransactions.length} aktywnych transakcji (oczekujących lub opłaconych)\n`;
+        }
       }
-
-      [inputJezyk, inputPoziom, inputCenaMax, inputInstruktor, inputMiejsca].forEach(input => {
-          if(input) {
-              input.addEventListener('input', function() {
-                  console.log(`Filtrowanie po: ${input.name} = ${input.value}`);
-                  filterRows();
-              });
-          } else {
-              console.warn('Nie znaleziono inputa:', input);
-          }
-      });
-
-      function filterRows() {
-          const filterJezyk = inputJezyk?.value.trim().toLowerCase() || '';
-          const filterPoziom = inputPoziom?.value.trim().toLowerCase() || '';
-          const filterCena = parseFloat(inputCenaMax?.value.replace(',', '.') || NaN);
-          const filterInstruktor = inputInstruktor?.value.trim().toLowerCase() || '';
-          const filterMiejsca = parseInt(inputMiejsca?.value) || NaN;
-
-          rows.forEach(row => {
-              const cells = row.children;
-
-              const jezyk = cells[1].textContent.trim().toLowerCase();
-              const poziom = cells[2].textContent.trim().toLowerCase();
-              const instruktor = cells[3].textContent.trim().toLowerCase();
-              const cena = parseFloat(cells[6].textContent.replace(',', '.')) || NaN;
-              const miejsca = parseInt(cells[7].textContent) || NaN;
-
-              let show = true;
-
-              if(filterJezyk && !jezyk.includes(filterJezyk)) {
-                  show = false;
-              }
-              if(filterPoziom && !poziom.includes(filterPoziom)) {
-                  show = false;
-              }
-              if(!isNaN(filterCena) && (isNaN(cena) || cena > filterCena)) {
-                  show = false;
-              }
-              if(filterInstruktor && !instruktor.includes(filterInstruktor)) {
-                  show = false;
-              }
-              if(!isNaN(filterMiejsca) && miejsca !== filterMiejsca) {
-                  show = false;
-              }
-
-              row.style.display = show ? '' : 'none';
-          });
+      
+      // Sprawdź czy kurs obecnie trwa
+      const today = new Date().toISOString().split('T')[0];
+      const startDate = selectedCourse.data_rozpoczecia;
+      const endDate = selectedCourse.data_zakonczenia;
+      
+      if (startDate <= today && endDate >= today) {
+        message += '• Kurs obecnie trwa\n';
       }
-  });
+      
+      message += '\nMożesz usunąć kurs tylko gdy:\n';
+      message += '• Nie ma aktywnych transakcji\n';
+      message += '• Kurs się zakończył lub jeszcze się nie rozpoczął';
+      
+      alert(message);
+    }
+
+    // Reszta kodu filtrowania...
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputJezyk = document.querySelector('input[name="jezyk"]');
+        const inputPoziom = document.querySelector('input[name="poziom"]');
+        const inputCenaMax = document.querySelector('input[name="cena_max"]');
+        const inputInstruktor = document.querySelector('input[name="instruktor"]');
+        const inputMiejsca = document.querySelector('input[name="miejsca"]');
+
+        const table = document.getElementById('coursesTable');
+        const rows = table.querySelectorAll('tbody tr');
+
+        if (!table) {
+            console.error('Tabela coursesTable nie znaleziona');
+            return;
+        }
+
+        [inputJezyk, inputPoziom, inputCenaMax, inputInstruktor, inputMiejsca].forEach(input => {
+            if(input) {
+                input.addEventListener('input', function() {
+                    console.log(`Filtrowanie po: ${input.name} = ${input.value}`);
+                    filterRows();
+                });
+            } else {
+                console.warn('Nie znaleziono inputa:', input);
+            }
+        });
+
+        function filterRows() {
+            const filterJezyk = inputJezyk?.value.trim().toLowerCase() || '';
+            const filterPoziom = inputPoziom?.value.trim().toLowerCase() || '';
+            const filterCena = parseFloat(inputCenaMax?.value.replace(',', '.') || NaN);
+            const filterInstruktor = inputInstruktor?.value.trim().toLowerCase() || '';
+            const filterMiejsca = parseInt(inputMiejsca?.value) || NaN;
+
+            rows.forEach(row => {
+                const cells = row.children;
+
+                const jezyk = cells[1].textContent.trim().toLowerCase();
+                const poziom = cells[2].textContent.trim().toLowerCase();
+                const instruktor = cells[3].textContent.trim().toLowerCase();
+                const cena = parseFloat(cells[6].textContent.replace(',', '.')) || NaN;
+                const miejsca = parseInt(cells[7].textContent) || NaN;
+
+                let show = true;
+
+                if(filterJezyk && !jezyk.includes(filterJezyk)) {
+                    show = false;
+                }
+                if(filterPoziom && !poziom.includes(filterPoziom)) {
+                    show = false;
+                }
+                if(!isNaN(filterCena) && (isNaN(cena) || cena > filterCena)) {
+                    show = false;
+                }
+                if(filterInstruktor && !instruktor.includes(filterInstruktor)) {
+                    show = false;
+                }
+                if(!isNaN(filterMiejsca) && miejsca !== filterMiejsca) {
+                    show = false;
+                }
+
+                row.style.display = show ? '' : 'none';
+            });
+        }
+    });
   </script>
 </body>
 </html>

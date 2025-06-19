@@ -5,14 +5,30 @@ use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\Instruktor;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Transakcja; 
 
 class CourseController extends Controller
 {
     public function index(Request $request) {
-        $query = Course::with('instructor');
-        $courses = $query->get();
+        $courses = Course::with(['instructor', 'transakcje'])->get();
+        
+        foreach ($courses as $course) {
+            $today = now()->toDateString();
+            $courseIsRunning = $course->data_rozpoczecia <= $today && $course->data_zakonczenia >= $today;
+            
+            if ($courseIsRunning) {
+                $hasActiveTransactions = $course->transakcje()
+                    ->whereIn('status', ['Oczekuje', 'Opłacone'])
+                    ->exists();
+                $course->canDelete = !$hasActiveTransactions;
+            } else {
+                $course->canDelete = true;
+            }
+        }
+        
         return view('course', compact('courses'));
     }
+    
     
     public function show($kursy) {
         $course = Course::with('instructor')->findOrFail($kursy);
@@ -34,29 +50,52 @@ class CourseController extends Controller
         $course = Course::findOrFail($kursy);
     
         $validatedData = $request->validate([
-            'jezyk' => 'required|string|max:255',
-            'poziom' => 'required|string|max:255',
-            'data_rozpoczecia' => 'required|date',
-            'data_zakonczenia' => 'required|date|after_or_equal:data_rozpoczecia',
-            'cena' => 'required|numeric|min:0',
-            'liczba_miejsc' => 'required|integer|min:1',
+            'jezyk' => 'required|string|min:2|max:50|regex:/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s]+$/',
+            'poziom' => 'required|in:Początkujący,Średniozaawansowany,Zaawansowany',
+            'data_rozpoczecia' => 'required|date|after_or_equal:today',
+            'data_zakonczenia' => 'required|date|after:data_rozpoczecia',
+            'cena' => 'required|numeric|min:1|max:99999999.99',
+            'liczba_miejsc' => 'required|integer|min:1|max:1000',
             'id_instruktora' => 'required|exists:instruktorzy,id',
-            'zdjecie' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp|max:5120', // Zmienione z 'image' na 'file'
+            'zdjecie' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'usun_zdjecie' => 'nullable|boolean'
         ], [
+            // Walidacja języka
             'jezyk.required' => 'Pole język jest wymagane.',
-            'poziom.required' => 'Pole poziom jest wymagane.',
+            'jezyk.string' => 'Język musi być tekstem.',
+            'jezyk.min' => 'Język musi mieć co najmniej 2 znaki.',
+            'jezyk.max' => 'Język nie może mieć więcej niż 50 znaków.',
+            'jezyk.regex' => 'Język może zawierać tylko litery i spacje.',
+            
+            // Walidacja poziomu
+            'poziom.required' => 'Wybór poziomu jest wymagany.',
+            'poziom.in' => 'Wybrany poziom jest nieprawidłowy.',
+            
+            // Walidacja dat
             'data_rozpoczecia.required' => 'Data rozpoczęcia jest wymagana.',
+            'data_rozpoczecia.date' => 'Data rozpoczęcia musi być prawidłową datą.',
+            'data_rozpoczecia.after_or_equal' => 'Data rozpoczęcia nie może być wcześniejsza niż dzisiaj.',
             'data_zakonczenia.required' => 'Data zakończenia jest wymagana.',
-            'data_zakonczenia.after_or_equal' => 'Data zakończenia musi być późniejsza lub równa dacie rozpoczęcia.',
+            'data_zakonczenia.date' => 'Data zakończenia musi być prawidłową datą.',
+            'data_zakonczenia.after' => 'Data zakończenia musi być późniejsza niż data rozpoczęcia.',
+            
+            // Walidacja ceny
             'cena.required' => 'Cena jest wymagana.',
             'cena.numeric' => 'Cena musi być liczbą.',
-            'cena.min' => 'Cena nie może być ujemna.',
+            'cena.min' => 'Cena musi być większa od 0.',
+            'cena.max' => 'Cena nie może przekraczać 99 999 999,99 zł.',
+            
+            // Walidacja miejsc
             'liczba_miejsc.required' => 'Liczba miejsc jest wymagana.',
             'liczba_miejsc.integer' => 'Liczba miejsc musi być liczbą całkowitą.',
             'liczba_miejsc.min' => 'Liczba miejsc musi być większa od 0.',
+            'liczba_miejsc.max' => 'Liczba miejsc nie może przekraczać 1000.',
+            
+            // Walidacja instruktora
             'id_instruktora.required' => 'Wybór instruktora jest wymagany.',
-            'id_instruktora.exists' => 'Wybrany instruktor nie istnieje.',
+            'id_instruktora.exists' => 'Wybrany instruktor nie istnieje w systemie.',
+            
+            // Walidacja zdjęcia
             'zdjecie.file' => 'Pole musi zawierać plik.',
             'zdjecie.mimes' => 'Zdjęcie musi być w formacie: jpeg, png, jpg, gif lub webp.',
             'zdjecie.max' => 'Rozmiar zdjęcia nie może przekraczać 5MB.'
@@ -89,32 +128,54 @@ class CourseController extends Controller
     
         return redirect()->route('kursy.index')->with('success', 'Kurs został zaktualizowany.');
     }
-
-
+    
     public function store(Request $request) {
         $validatedData = $request->validate([
-            'jezyk' => 'required|string|max:255',
-            'poziom' => 'required|string|max:255',
-            'data_rozpoczecia' => 'required|date',
-            'data_zakonczenia' => 'required|date|after_or_equal:data_rozpoczecia',
-            'cena' => 'required|numeric|min:0',
-            'liczba_miejsc' => 'required|integer|min:1',
+            'jezyk' => 'required|string|min:2|max:50|regex:/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s]+$/',
+            'poziom' => 'required|in:Początkujący,Średniozaawansowany,Zaawansowany',
+            'data_rozpoczecia' => 'required|date|after_or_equal:today',
+            'data_zakonczenia' => 'required|date|after:data_rozpoczecia',
+            'cena' => 'required|numeric|min:1|max:99999999.99',
+            'liczba_miejsc' => 'required|integer|min:1|max:1000',
             'id_instruktora' => 'required|exists:instruktorzy,id',
             'zdjecie' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp|max:5120'
         ], [
+            // Walidacja języka
             'jezyk.required' => 'Pole język jest wymagane.',
-            'poziom.required' => 'Pole poziom jest wymagane.',
+            'jezyk.string' => 'Język musi być tekstem.',
+            'jezyk.min' => 'Język musi mieć co najmniej 2 znaki.',
+            'jezyk.max' => 'Język nie może mieć więcej niż 50 znaków.',
+            'jezyk.regex' => 'Język może zawierać tylko litery i spacje.',
+            
+            // Walidacja poziomu
+            'poziom.required' => 'Wybór poziomu jest wymagany.',
+            'poziom.in' => 'Wybrany poziom jest nieprawidłowy.',
+            
+            // Walidacja dat
             'data_rozpoczecia.required' => 'Data rozpoczęcia jest wymagana.',
+            'data_rozpoczecia.date' => 'Data rozpoczęcia musi być prawidłową datą.',
+            'data_rozpoczecia.after_or_equal' => 'Data rozpoczęcia nie może być wcześniejsza niż dzisiaj.',
             'data_zakonczenia.required' => 'Data zakończenia jest wymagana.',
-            'data_zakonczenia.after_or_equal' => 'Data zakończenia musi być późniejsza lub równa dacie rozpoczęcia.',
+            'data_zakonczenia.date' => 'Data zakończenia musi być prawidłową datą.',
+            'data_zakonczenia.after' => 'Data zakończenia musi być późniejsza niż data rozpoczęcia.',
+            
+            // Walidacja ceny
             'cena.required' => 'Cena jest wymagana.',
             'cena.numeric' => 'Cena musi być liczbą.',
-            'cena.min' => 'Cena nie może być ujemna.',
+            'cena.min' => 'Cena musi być większa od 0.',
+            'cena.max' => 'Cena nie może przekraczać 99 999 999,99 zł.',
+            
+            // Walidacja miejsc
             'liczba_miejsc.required' => 'Liczba miejsc jest wymagana.',
             'liczba_miejsc.integer' => 'Liczba miejsc musi być liczbą całkowitą.',
             'liczba_miejsc.min' => 'Liczba miejsc musi być większa od 0.',
+            'liczba_miejsc.max' => 'Liczba miejsc nie może przekraczać 1000.',
+            
+            // Walidacja instruktora
             'id_instruktora.required' => 'Wybór instruktora jest wymagany.',
-            'id_instruktora.exists' => 'Wybrany instruktor nie istnieje.',
+            'id_instruktora.exists' => 'Wybrany instruktor nie istnieje w systemie.',
+            
+            // Walidacja zdjęcia
             'zdjecie.file' => 'Pole musi zawierać plik.',
             'zdjecie.mimes' => 'Zdjęcie musi być w formacie: jpeg, png, jpg, gif lub webp.',
             'zdjecie.max' => 'Rozmiar zdjęcia nie może przekraczać 5MB.'
@@ -132,18 +193,33 @@ class CourseController extends Controller
     
         return redirect()->route('kursy.index')->with('success', 'Kurs został dodany.');
     }
-    
 
     public function destroy($kursy) {
         $course = Course::findOrFail($kursy);
         
-        // Usuń zdjęcie jeśli istnieje
-        if ($course->zdjecie) {
+       
+        $today = now()->toDateString();
+        $courseIsRunning = $course->data_rozpoczecia <= $today && $course->data_zakonczenia >= $today;
+        
+        if ($courseIsRunning) {
+            $hasActiveTransactions = Transakcja::where('id_kursu', $course->id_kursu)
+                ->whereIn('status', ['Oczekuje', 'Opłacone'])
+                ->exists();
+            
+            if ($hasActiveTransactions) {
+                return redirect()->back()->with('error', 
+                    'Nie można usunąć kursu, który obecnie trwa i ma zapisanych uczestników.');
+            }
+        }
+        
+        
+        if ($course->zdjecie && !str_starts_with($course->zdjecie, 'img/')) {
             Storage::disk('public')->delete($course->zdjecie);
         }
         
         $course->delete();
-
+        
         return redirect()->route('kursy.index')->with('success', 'Kurs został usunięty.');
     }
+    
 }
