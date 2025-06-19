@@ -5,15 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Edytuj Instruktora</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="{{ asset('css/admin.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/form.css') }}" />
 </head>
-<body style="background: #f4f6fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px 30px;">
+<body style="padding: 0 !important;">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h4 class="text-center mb-4 py-2">Szkoła Językowa</h4>
+    <div class="d-flex flex-column">
+      <a href="{{ url('dashboard') }}" class="nav-link">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </a>
+      <a href="{{ url('kursy') }}" class="nav-link">
+        <i class="bi bi-book"></i> Kursy
+      </a>
+      <a href="{{ url('instruktorzy') }}" class="nav-link active">
+        <i class="bi bi-person-workspace"></i> Instruktorzy
+      </a>
+      <a href="{{ url('klienci') }}" class="nav-link">
+        <i class="bi bi-people"></i> Klienci
+      </a>
+      <a href="{{ url('transakcje') }}" class="nav-link">
+        <i class="bi bi-cash-coin"></i> Transakcje
+      </a>
+      <a href="{{ url('znizki') }}" class="nav-link">
+        <i class="bi bi-tag"></i> Zniżki
+      </a>
+      <a href="{{ url('/') }}" class="nav-link mt-auto" target="_blank">
+        <i class="bi bi-house"></i> Strona główna
+      </a>
+      <a href="{{ url('logout') }}" class="nav-link">
+        <i class="bi bi-box-arrow-left"></i> Wyloguj
+      </a>
+    </div>
+  </div>
 
-  <div class="container bg-white p-4 rounded shadow-sm" style="max-width: 700px; margin: auto;">
-    <h2 class="mb-4">Edytuj Instruktora</h2>
+  <div class="main-content">
+    <div class="container">
+      <h2 class="admin-title mb-4">Edytuj Instruktora</h2>
 
-   <form action="{{ route('instruktorzy.update', $instruktor->id) }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    @method('PUT')
+    @if ($errors->any())
+      <div class="alert alert-danger">
+        <ul class="mb-0">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    @endif
+
+    <form action="{{ route('instruktorzy.update', $instruktor->id) }}" method="POST" enctype="multipart/form-data">
+      @csrf
+      @method('PUT')
 
       <div class="mb-3">
         <label for="imie" class="form-label">Imię</label>
@@ -31,49 +75,52 @@
       </div>
 
       <div class="mb-3">
-        <label for="jezyk" class="form-label">Specjalizacja</label>
+        <label for="jezyk" class="form-label">Specjalizacja (język)</label>
         <select name="jezyk" id="jezyk" class="form-select" required>
-          <option value="">Wybierz język</option>
+          <option value="" disabled>Wybierz język</option>
           <option value="Angielski" {{ old('jezyk', $instruktor->jezyk) == 'Angielski' ? 'selected' : '' }}>Angielski</option>
           <option value="Niemiecki" {{ old('jezyk', $instruktor->jezyk) == 'Niemiecki' ? 'selected' : '' }}>Niemiecki</option>
           <option value="Hiszpański" {{ old('jezyk', $instruktor->jezyk) == 'Hiszpański' ? 'selected' : '' }}>Hiszpański</option>
-          <!-- Dodaj więcej jeśli potrzeba -->
+          <option value="Francuski" {{ old('jezyk', $instruktor->jezyk) == 'Francuski' ? 'selected' : '' }}>Francuski</option>
         </select>
       </div>
 
-    @php
-    $currentLevel = old('poziom', $instruktor->poziom);
-    @endphp
+      @php
+      $currentLevel = old('poziom', $instruktor->poziom);
+      @endphp
 
-    <div class="mb-3">
-    <label for="poziom" class="form-label">Poziom</label>
-    <select name="poziom" id="poziom" class="form-select" required>
-        <option value="" disabled {{ $currentLevel ? '' : 'selected' }}>Wybierz poziom</option>
-        <option value="Początkujący" {{ $currentLevel == 'Początkujący' ? 'selected' : '' }}>Początkujący</option>
-        <option value="Średniozaawansowany" {{ $currentLevel == 'Średniozaawansowany' ? 'selected' : '' }}>Średniozaawansowany</option>
-        <option value="Zaawansowany" {{ $currentLevel == 'Zaawansowany' ? 'selected' : '' }}>Zaawansowany</option>
-    </select>
-    </div>
+      <div class="mb-3">
+        <label for="poziom" class="form-label">Poziom</label>
+        <select name="poziom" id="poziom" class="form-select" required>
+          <option value="" disabled {{ $currentLevel ? '' : 'selected' }}>Wybierz poziom</option>
+          <option value="Początkujący" {{ $currentLevel == 'Początkujący' ? 'selected' : '' }}>Początkujący</option>
+          <option value="Średniozaawansowany" {{ $currentLevel == 'Średniozaawansowany' ? 'selected' : '' }}>Średniozaawансowany</option>
+          <option value="Zaawansowany" {{ $currentLevel == 'Zaawansowany' ? 'selected' : '' }}>Zaawansowany</option>
+        </select>
+      </div>
 
-    <div class="mb-3">
+      <div class="mb-3">
         <label for="placa" class="form-label">Płaca (zł/h)</label>
-        <input type="number" step="0.01" name="placa" id="placa" class="form-control" value="{{ old('placa', $instruktor->placa) }}" required>
-    </div>
+        <input type="number" step="0.01" min="0" name="placa" id="placa" class="form-control" value="{{ old('placa', $instruktor->placa) }}" required>
+      </div>
 
-    <div class="mb-3">
-        <label for="zdjecie" class="form-label">Nowe zdjęcie (opcjonalne):</label>
-        <input type="file" name="zdjecie" id="zdjecie" class="form-control">
-    </div>
+      <div class="mb-3">
+        <label for="zdjecie" class="form-label">Nowe zdjęcie profilowe (opcjonalne)</label>
+        <input type="file" name="zdjecie" id="zdjecie" class="form-control" accept="image/*">
+      </div>
 
-    <div class="mb-3 form-check">
+      <div class="mb-3 form-check">
         <input type="checkbox" name="usun_zdjecie" id="usun_zdjecie" value="1" class="form-check-input">
         <label for="usun_zdjecie" class="form-check-label">Usuń obecne zdjęcie</label>
-    </div>
+      </div>
 
-    <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Zapisz</button>
+      <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+        <a href="{{ url('instruktorzy') }}" class="btn btn-secondary" style="width: auto !important;">Anuluj</a>
+        <button type="submit" class="btn btn-primary" style="width: auto !important;">Zapisz zmiany</button>
+      </div>
+    </form>
     </div>
-
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

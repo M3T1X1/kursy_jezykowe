@@ -1,6 +1,5 @@
 <?php
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
@@ -29,14 +28,12 @@ class Course extends Model
     public function instructor() {
         return $this->belongsTo(Instruktor::class, 'id_instruktora', 'id');
     }
-   
 
     public function transakcje() {
         return $this->hasMany(Transakcja::class, 'id_kursu', 'id_kursu');
     }
 
     public function reservations() {
-    return $this->hasMany(Reservation::class, 'course_id', 'id_kursu');
+        return $this->hasMany(Reservation::class, 'course_id', 'id_kursu');
     }
-
 }
