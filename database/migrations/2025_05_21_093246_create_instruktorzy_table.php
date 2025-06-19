@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
         Schema::create('instruktorzy', function (Blueprint $table) {
-            $table->id(); // lub dodaj id_instruktora jeśli potrzebujesz custom ID
+            $table->id();
             $table->string('email')->unique();
             $table->string('imie');
             $table->string('nazwisko');
@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('adres_zdjecia')->nullable();
             $table->string('poziom');
             $table->decimal('placa', 10, 2);
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }
