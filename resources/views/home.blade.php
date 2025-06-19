@@ -63,26 +63,26 @@
     <h2 class="mb-4">Dostępne kursy</h2>
     <div class="row g-4">
         @foreach($kursy as $kurs)
-        <div class="col-md-4">
-            <div class="card course-card h-100 d-flex flex-column">
-                <img src="{{ $kurs->zdjecie_url }}" alt="{{ $kurs->jezyk }} - {{ $kurs->poziom }}" class="course-card img">
-                <div class="card-body d-flex flex-column">
-                    <h5><a href="course-detail.html?id={{ $kurs->id_kursu }}" class="course-title">{{ $kurs->jezyk }} - {{ $kurs->poziom }}</a></h5>
-                    <p class="card-text flex-grow-1">
-                        @if($kurs->instructor)
-                            Instruktor: <a href="instructor-detail.html?id={{ $kurs->instructor->id }}" class="instructor-name">{{ $kurs->instructor->imie }} {{ $kurs->instructor->nazwisko }}</a><br>
-                        @else
-                            Instruktor: Brak przypisanego<br>
-                        @endif
-                        Start: {{ $kurs->data_rozpoczecia->format('Y-m-d') }}<br>
-                        Cena: {{ number_format($kurs->cena, 0, ',', ' ') }} PLN
-                    </p>
-                    <div class="mt-auto">
-                        <a href="{{ route('rezerwacja.create', ['course' => $kurs->id_kursu]) }}" class="btn btn-primary w-100">Zapisz się na kurs</a>
+            <div class="col-md-4">
+                <div class="card course-card h-100 d-flex flex-column">
+                    <img src="{{ $kurs->zdjecie_url }}" alt="{{ $kurs->jezyk }} - {{ $kurs->poziom }}" class="course-card img">
+                    <div class="card-body d-flex flex-column">
+                        <h5><a href="course-detail.html?id={{ $kurs->id_kursu }}" class="course-title">{{ $kurs->jezyk }} - {{ $kurs->poziom }}</a></h5>
+                        <p class="card-text flex-grow-1">
+                            @if($kurs->hasInstructor())
+                                Instruktor: <span class="instructor-name">{{ $kurs->instructor_full_name }}</span><br>
+                            @else
+                                Instruktor: Brak przypisanego<br>
+                            @endif
+                            Start: {{ $kurs->data_rozpoczecia->format('Y-m-d') }}<br>
+                            Cena: {{ number_format($kurs->cena, 0, ',', ' ') }} PLN
+                        </p>
+                        <div class="mt-auto">
+                            <a href="{{ route('rezerwacja.create', ['course' => $kurs->id_kursu]) }}" class="btn btn-primary w-100">Zapisz się na kurs</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         @endforeach
     </div>
     <div class="text-center mb-5 mt-5">

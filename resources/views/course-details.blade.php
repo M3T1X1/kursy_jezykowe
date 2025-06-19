@@ -115,18 +115,18 @@
                 </div>
             </div>
 
-            @if($course->instructor)
-            <div class="mt-4" style="border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); background: white; padding: 12px; min-height: auto !important; height: auto !important;">
-                <div class="d-flex align-items-center">
-                    <img
-                        src="{{ $course->instructor->zdjecie_url ?? asset('img/ZdjeciaInstruktorow/brak.png') }}"
-                        alt="Instruktor"
-                        class="rounded-circle me-2"
-                        style="width: 35px; height: 35px; object-fit: cover;"
-                    >
-                    <span style="font-weight: 500;">Instruktor - {{ $course->instructor->imie }} {{ $course->instructor->nazwisko }}</span>
+            @if($course->hasInstructor())
+                <div class="mt-4" style="border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); background: white; padding: 12px; min-height: auto !important; height: auto !important;">
+                    <div class="d-flex align-items-center">
+                        <img
+                            src="{{ $course->instructor_photo_url }}"
+                            alt="Instruktor"
+                            class="rounded-circle me-2"
+                            style="width: 35px; height: 35px; object-fit: cover;"
+                        >
+                        <span style="font-weight: 500;">Instruktor - {{ $course->instructor_full_name }}</span>
+                    </div>
                 </div>
-            </div>
             @endif
         </div>
     </div>

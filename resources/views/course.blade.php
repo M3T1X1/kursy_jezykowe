@@ -79,11 +79,13 @@
         </td>
         <td>{{ $course->poziom }}</td>
         <td>
-          @if ($course->instructor)
-            {{ $course->instructor->imie }} {{ $course->instructor->nazwisko }}
-          @else
-            <span class="text-muted">Brak</span>
-          @endif
+          <td>
+            @if ($course->hasInstructor())
+                {{ $course->instructor_full_name }}
+            @else
+                <span class="text-muted">Brak instruktora</span>
+            @endif
+</td>
         </td>
         <td>{{ \Carbon\Carbon::parse($course->data_rozpoczecia)->format('Y-m-d') }}</td>
         <td>{{ \Carbon\Carbon::parse($course->data_zakonczenia)->format('Y-m-d') }}</td>
