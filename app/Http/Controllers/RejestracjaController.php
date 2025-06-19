@@ -11,7 +11,7 @@ class RejestracjaController extends Controller
 {
     public function showForm()
     {
-        return view('auth.register'); // lub ścieżka do Twojego widoku rejestracji
+        return view('auth.register');
     }
 
     public function register(Request $request)
@@ -30,13 +30,11 @@ class RejestracjaController extends Controller
             'nr_telefonu.regex' => 'Numer telefonu musi składać się z dokładnie 9 cyfr.',
         ]);
 
-        // Obsługa uploadu zdjęcia
         if ($request->hasFile('zdjecie')) {
             $path = $request->file('zdjecie')->store('klienci', 'public');
             $validated['adres_zdjecia'] = $path;
         }
 
-        // Utwórz nowego klienta
         $klient = Klient::create([
             'email' => $validated['email'],
             'haslo' => Hash::make($validated['password']),
@@ -48,12 +46,9 @@ class RejestracjaController extends Controller
             'role' => 'user',
         ]);
 
-        // Jeśli rejestruje admin (przychodzi parametr 'admin'), NIE loguj nowego klienta!
         if ($request->has('admin')) {
-            // Admin zostaje zalogowany, wraca na listę klientów
             return redirect()->route('klienci.index')->with('success', 'Klient został dodany!');
         } else {
-            // Zwykła rejestracja – automatyczne logowanie nowego klienta
             Auth::login($klient);
             return redirect()->route('login')->with('success', 'Rejestracja zakończona sukcesem! Możesz się zalogować.');
         }

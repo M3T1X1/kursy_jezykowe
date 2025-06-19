@@ -10,10 +10,8 @@ class KlientController extends Controller
 {
     public function index()
     {
-        // Pobierz wszystkich klientów
         $klienci = Klient::all();
 
-        // Mapowanie danych (opcjonalnie, jeśli chcesz ujednolicić strukturę)
         $data = $klienci->map(function ($k) {
             return (object)[
                 'imie' => $k->imie,
@@ -40,7 +38,6 @@ class KlientController extends Controller
         $klient = \App\Models\Klient::findOrFail($id_klienta);
         $klient->delete();
 
-        // Możesz dodać komunikat flash, jeśli chcesz
         return redirect()->route('klienci.index')->with('success', 'Klient został usunięty.');
     }
 
