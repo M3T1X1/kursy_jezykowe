@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->integer('liczba_miejsc');
             $table->unsignedBigInteger('id_instruktora');
             $table->foreign('id_instruktora')->references('id')->on('instruktorzy')->onDelete('cascade');
+            $table->string('zdjecie')->nullable();
             $table->timestamps();
         });
     }

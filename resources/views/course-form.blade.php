@@ -1,7 +1,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/form.css') }}">
 
-
 <div class="mb-3">
     <label for="jezyk" class="form-label">Język</label>
     <input type="text" name="jezyk" id="jezyk" class="form-control"
@@ -54,3 +53,22 @@
         @endforeach
     </select>
 </div>
+
+
+<div class="mb-3">
+    <label for="zdjecie" class="form-label">Zdjęcie kursu</label>
+    <input type="file" name="zdjecie" id="zdjecie" class="form-control" accept="image/*">
+    @if(isset($course) && $course->zdjecie)
+        <div class="mt-2">
+            <small class="text-muted">Obecne zdjęcie:</small><br>
+            <img src="{{ asset('storage/' . $course->zdjecie) }}" alt="Zdjęcie kursu" style="max-width: 200px; max-height: 150px; object-fit: cover;" class="rounded">
+        </div>
+    @endif
+</div>
+
+@if(isset($course) && $course->zdjecie)
+<div class="mb-3 form-check">
+    <input type="checkbox" name="usun_zdjecie" id="usun_zdjecie" value="1" class="form-check-input">
+    <label for="usun_zdjecie" class="form-check-label">Usuń obecne zdjęcie</label>
+</div>
+@endif

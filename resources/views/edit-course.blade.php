@@ -21,7 +21,7 @@
             </div>
         @endif
 
-        <form action="{{ route('kursy.update', $course) }}" method="POST">
+        <form action="{{ route('kursy.update', $course) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             @include('course-form')
@@ -29,7 +29,7 @@
                 <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
                 <a href="{{ route('kursy.index') }}" class="btn btn-secondary">Anuluj</a>
             </div>
-        </form>
+            </form>     
     </div>
 </body>
 </html>
