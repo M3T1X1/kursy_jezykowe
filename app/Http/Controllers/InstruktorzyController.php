@@ -161,6 +161,7 @@ class InstruktorzyController extends Controller
             // Płaca
             'placa.required' => 'Pole płaca jest wymagane.',
             'placa.numeric' => 'Płaca musi być liczbą (np. 50 lub 45.50).',
+            'placa.between' => 'Płaca musi być między 20 a 500 zł/h.',
             'placa.regex' => 'Płaca może mieć maksymalnie 2 miejsca po przecinku (np. 45.50).',
 
             // Zdjęcie
