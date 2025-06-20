@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->string('status');
             $table->date('data');
             $table->timestamps();
-
+            $table->unsignedBigInteger('reservation_id')->nullable();
 
             $table->foreign('id_kursu')
                 ->references('id_kursu')
@@ -32,6 +32,11 @@ return new class extends Migration {
                   ->references('id_klienta')
                   ->on('klienci')
                   ->onDelete('set null');
+                  
+            $table->foreign('reservation_id')
+                    ->references('id')
+                    ->on('reservations')
+                    ->onDelete('set null');
         });
     }
 

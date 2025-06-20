@@ -209,9 +209,10 @@ body {
   }
   .table th,
   .table td {
+
     white-space: nowrap;
     font-size: 0.85rem;
-    padding: 0.5rem 0.3rem;
+    paddingz 0.5rem 0.3rem;
   }
 
 /* Dla bardzo małych ekranów */

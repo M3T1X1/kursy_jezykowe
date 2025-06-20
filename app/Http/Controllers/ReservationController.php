@@ -47,6 +47,7 @@ class ReservationController extends Controller
         try {
             DB::transaction(function () use ($validated, $user) {
                 $course = Course::lockForUpdate()->findOrFail($validated['course']);
+                $instructor = $course->instructor;
 
                 // Walidacja dostępności
                 if (now()->between($course->data_rozpoczecia, $course->data_zakonczenia)) {
@@ -104,6 +105,8 @@ class ReservationController extends Controller
                     'kurs_jezyk' => $course->jezyk,
                     'kurs_poziom' => $course->poziom,
                     'kurs_data_rozpoczecia' => $course->data_rozpoczecia,
+                    'instruktor_imie' => $instructor ? $instructor->imie : null,
+                    'instruktor_nazwisko' => $instructor ? $instructor->nazwisko : null,
                     'cena_ostateczna' => $discountedPrice,
                     'status' => 'Oczekuje',
                     'data' => now(),
