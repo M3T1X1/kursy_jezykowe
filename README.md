@@ -186,7 +186,7 @@ Przykładowi użytkownicy aplikacji:
 <img src="./dokumentacja/Edytuj-Klient.png" alt="EdytujKlient" width="600">
 *Strona z edycją klienta*
 
-<img src="./dokumentacja/Dodaj-Klienta.png" alt="DodajKlient" width="600">
+<img src="./dokumentacja/Register.png" alt="DodajKlient" width="600">
 *Strona z dodaniem klienta*
 
 <img src="./dokumentacja/Transakcje.png" alt="Transakcje" width="600">
