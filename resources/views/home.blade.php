@@ -67,10 +67,10 @@
                 <div class="card course-card h-100 d-flex flex-column">
                     <img src="{{ $kurs->zdjecie_url }}" alt="{{ $kurs->jezyk }} - {{ $kurs->poziom }}" class="course-card img">
                     <div class="card-body d-flex flex-column">
-                        <h5><a href="course-detail.html?id={{ $kurs->id_kursu }}" class="course-title">{{ $kurs->jezyk }} - {{ $kurs->poziom }}</a></h5>
+                        <h5><a href="{{ route('kurs.show', $kurs->id_kursu) }}" class="course-title">{{ $kurs->jezyk }} - {{ $kurs->poziom }}</a></h5>
                         <p class="card-text flex-grow-1">
                             @if($kurs->instructor)
-                                Instruktor: <a href="instructor-detail.html?id={{ $kurs->instructor->id }}" class="instructor-name">{{ $kurs->instructor->imie }} {{ $kurs->instructor->nazwisko }}</a><br>
+                                Instruktor: <span class="instructor-text">{{ $kurs->instructor->imie }} {{ $kurs->instructor->nazwisko }}</span><br>
                             @else
                                 Instruktor: Brak przypisanego<br>
                             @endif

@@ -71,9 +71,9 @@
             <input type="file" name="zdjecie" id="zdjecie" class="form-control" accept="image/*">
           </div>
 
-        <div class="d-flex gap-2 justify-content-end mt-4">
-          <a href="{{ url('instruktorzy') }}" class="btn btn-secondary">Anuluj</a>
-          <button type="submit" class="btn btn-primary">Dodaj Instruktora</button>
+        <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">Dodaj Instruktora</button>
+            <a href="{{ url('instruktorzy') }}" class="btn btn-secondary">Anuluj</a>
         </div>
       </form>
     </div>

@@ -42,7 +42,7 @@ Dostępne funkcjonalności:
 ### Narzędzia i technologie
 * PHP 8.2
 * Laravel Framework 11.x
-* MySQL 8.0
+* PostgreSQL 16.x
 * HTML5, CSS3, JavaScript
 * Bootstrap 5.3.0
 * Composer
@@ -54,7 +54,7 @@ Dostępne funkcjonalności:
 Wymagania:
 - PHP 8.2 lub wyższy
 - Composer
-- MySQL 8.0
+- PostgreSQL 16.x lub wyższy
 - Node.js & NPM
 
 ```bash
@@ -74,7 +74,10 @@ cp .env.example .env
 # Wygenerowanie klucza aplikacji
 php artisan key:generate
 
-# Konfiguracja bazy danych w pliku .env
+# Konfiguracja bazy danych PostgreSQL w pliku .env
+# DB_CONNECTION=pgsql
+# DB_HOST=127.0.0.1
+# DB_PORT=5432
 # DB_DATABASE=nazwa_bazy
 # DB_USERNAME=uzytkownik
 # DB_PASSWORD=haslo
@@ -98,48 +101,66 @@ Przykładowi użytkownicy aplikacji:
 
 ![Diagram ERD](./dokumentacja/erd.png)
 
-**Główne tabele i relacje:**
+**Główne tabele i relacje (PostgreSQL):**
 
 **Tabela `kursy` (Kursy językowe):**
-- `id_kursu` (PK) - unikalny identyfikator kursu
-- `cena`, `jezyk`, `poziom` - podstawowe dane kursu  
-- `data_rozpoczecia`, `data_zakonczenia` - harmonogram
-- `liczba_miejsc` - limit uczestników
-- `id_instruktora` (FK) - powiązanie z instruktorem
-- `zdjecie` - ścieżka do obrazu kursu
+- `id_kursu` (SERIAL PRIMARY KEY) - unikalny identyfikator kursu
+- `cena` (DECIMAL(8,2)), `jezyk` (VARCHAR), `poziom` (VARCHAR) - podstawowe dane kursu  
+- `data_rozpoczecia`, `data_zakonczenia` (DATE) - harmonogram
+- `liczba_miejsc` (INTEGER) - limit uczestników
+- `id_instruktora` (INTEGER REFERENCES instruktorzy) - powiązanie z instruktorem
+- `zdjecie_url` (VARCHAR) - URL do obrazu kursu
 - Denormalizowane dane instruktora (zachowane po soft-delete)
+- `created_at`, `updated_at` (TIMESTAMP) - znaczniki czasowe
 
 **Tabela `klienci` (Klienci szkoły):**
-- `id_klienta` (PK) - unikalny identyfikator
-- `email`, `imie`, `nazwisko` - dane osobowe
-- `haslo`, `adres`, `nr_telefonu` - dodatkowe informacje
-- `adres_zdjecia`, `role` - profil użytkownika
+- `id_klienta` (SERIAL PRIMARY KEY) - unikalny identyfikator
+- `email` (VARCHAR UNIQUE), `imie`, `nazwisko` (VARCHAR) - dane osobowe
+- `haslo` (VARCHAR), `adres`, `nr_telefonu` (VARCHAR) - dodatkowe informacje
+- `zdjecie_url` (VARCHAR), `role` (VARCHAR DEFAULT 'klient') - profil użytkownika
+- `created_at`, `updated_at` (TIMESTAMP) - znaczniki czasowe
+
+**Tabela `instruktorzy` (Instruktorzy):**
+- `id` (SERIAL PRIMARY KEY) - unikalny identyfikator
+- `imie`, `nazwisko` (VARCHAR) - dane osobowe
+- `email` (VARCHAR UNIQUE) - adres email
+- `jezyk` (VARCHAR) - specjalizacja językowa
+- `poziom` (VARCHAR) - poziom nauczania
+- `placa` (DECIMAL(8,2)) - stawka godzinowa
+- `zdjecie_url` (VARCHAR) - URL do zdjęcia profilowego
+- `deleted_at` (TIMESTAMP) - soft delete
+- `created_at`, `updated_at` (TIMESTAMP) - znaczniki czasowe
 
 **Tabela `transakcje` (Historia płatności):**
-- `id_transakcji` (PK) - unikalny identyfikator
-- `id_kursu` (FK) - powiązanie z kursem
-- `id_klienta` (FK) - powiązanie z klientem  
-- `kurs_jezyk`, `kurs_poziom` - denormalizowane dane kursu
-- `klient_imie`, `klient_nazwisko`, `klient_email` - denormalizowane dane klienta
-- `cena_ostateczna`, `status`, `data` - szczegóły transakcji
-- `reservation_id` (FK) - powiązanie z rezerwacją
+- `id_transakcji` (SERIAL PRIMARY KEY) - unikalny identyfikator
+- `id_kursu` (INTEGER REFERENCES kursy) - powiązanie z kursem
+- `id_klienta` (INTEGER REFERENCES klienci) - powiązanie z klientem  
+- `kurs_jezyk`, `kurs_poziom` (VARCHAR) - denormalizowane dane kursu
+- `klient_imie`, `klient_nazwisko`, `klient_email` (VARCHAR) - denormalizowane dane klienta
+- `cena_ostateczna` (DECIMAL(8,2)), `status` (VARCHAR), `data` (TIMESTAMP) - szczegóły transakcji
+- `reservation_id` (INTEGER REFERENCES reservations) - powiązanie z rezerwacją
 
 **Tabela `reservations` (Rezerwacje):**
-- `id` (PK) - unikalny identyfikator
-- `imie`, `nazwisko`, `email`, `nr_telefonu` - dane rezerwującego
-- `course_id` (FK) - powiązanie z kursem
-- `base_price` - cena bazowa
+- `id` (SERIAL PRIMARY KEY) - unikalny identyfikator
+- `imie`, `nazwisko`, `email`, `nr_telefonu` (VARCHAR) - dane rezerwującego
+- `course_id` (INTEGER REFERENCES kursy) - powiązanie z kursem
+- `base_price` (DECIMAL(8,2)) - cena bazowa
+- `created_at`, `updated_at` (TIMESTAMP) - znaczniki czasowe
 
 **Tabela `znizki` (System promocji):**
-- `id_znizki` (PK) - unikalny identyfikator  
-- `nazwa_znizki` - nazwa promocji
-- `wartosc` - wartość zniżki
-- `opis` - szczegóły promocji
-- `active` - status aktywności
+- `id_znizki` (SERIAL PRIMARY KEY) - unikalny identyfikator  
+- `nazwa_znizki` (VARCHAR) - nazwa promocji
+- `wartosc` (DECIMAL(5,2)) - wartość zniżki (procent)
+- `opis` (TEXT) - szczegóły promocji
+- `active` (BOOLEAN DEFAULT true) - status aktywności
+- `created_at`, `updated_at` (TIMESTAMP) - znaczniki czasowe
 
 **Tabela `klienci_znizki` (Powiązania klient-zniżka):**
 - Tabela łącząca klientów ze zniżkami (many-to-many)
-- `id_klienta` (FK), `id_znizki` (FK)
+- `id` (SERIAL PRIMARY KEY)
+- `id_klienta` (INTEGER REFERENCES klienci)
+- `id_znizki` (INTEGER REFERENCES znizki)
+- `created_at`, `updated_at` (TIMESTAMP)
 
 **Kluczowe relacje:**
 - Jeden instruktor może prowadzić wiele kursów (1:N)
@@ -147,6 +168,12 @@ Przykładowi użytkownicy aplikacji:
 - Jeden klient może mieć wiele transakcji (1:N)
 - Jeden kurs może mieć wiele rezerwacji (1:N)
 - Klienci i zniżki w relacji many-to-many
+
+**Indeksy PostgreSQL:**
+- Indeksy na kluczach obcych dla lepszej wydajności
+- Indeks na `email` w tabelach `klienci` i `instruktorzy`
+- Indeks na `data_rozpoczecia` w tabeli `kursy`
+- Indeks na `status` w tabeli `transakcje`
 
 ## Widoki aplikacji 
 
@@ -229,3 +256,11 @@ Przykładowi użytkownicy aplikacji:
 - Filtry i wyszukiwanie w tabelach
 - Responsywny interfejs
 - Eksport danych
+
+### Zalety PostgreSQL w projekcie
+- Zaawansowane typy danych (JSON, ARRAY)
+- Silne zabezpieczenia i integralność danych
+- Wydajność przy złożonych zapytaniach
+- Wsparcie dla full-text search
+- Atomowość transakcji (ACID)
+- Obsługa równoległych połączeń
