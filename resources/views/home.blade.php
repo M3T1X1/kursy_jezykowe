@@ -89,7 +89,7 @@
         <a href="{{ route('oferta') }}" class="btn btn-custom">Zobacz wszystkie kursy</a>
     </div>
 </div>
-<
+
 
   <div class="container my-5">
     <h3 class="text-center mb-4">Poznaj naszych instruktorów</h3>

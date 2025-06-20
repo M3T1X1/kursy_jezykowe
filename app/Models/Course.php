@@ -24,6 +24,19 @@ class Course extends Model
         'id_instruktora',
         'zdjecie',
     ];
+    
+    public function getZdjecieUrlAttribute()
+{
+    if ($this->zdjecie) {
+        if (str_starts_with($this->zdjecie, 'img/')) {
+            return asset($this->zdjecie);
+        } else {
+            return asset('storage/' . $this->zdjecie);
+        }
+    }
+    return asset('img/flags/brak.png');
+}
+
 
     public function instructor() {
         return $this->belongsTo(Instruktor::class, 'id_instruktora', 'id');

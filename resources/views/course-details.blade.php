@@ -41,7 +41,7 @@
 <!-- Hero section z zdjęciem kursu -->
 <div class="course-header" style="position: relative; background: linear-gradient(135deg, #007bff, #0056b3); min-height: 250px;">
     @if($course->zdjecie)
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('{{ asset('storage/' . $course->zdjecie) }}'); background-size: contain; background-repeat: no-repeat; background-position: center; opacity: 0.6;"></div>
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('{{ $course->zdjecie_url }}'); background-size: contain; background-repeat: no-repeat; background-position: center; opacity: 0.6;"></div>
     @endif
     <div class="container text-center py-5" style="position: relative; z-index: 2; color: white;">
         <h1 class="display-5 mb-3">{{ $course->jezyk }} - {{ $course->poziom }}</h1>
