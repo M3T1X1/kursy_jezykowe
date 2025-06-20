@@ -24,8 +24,6 @@ class TransakcjeController extends Controller
             ];
         });
 
-
-
         return view('transakcje.transakcje', ['transactions' => $data]);
     }
 

@@ -214,11 +214,6 @@ body {
     font-size: 0.85rem; 
     padding: 0.5rem 0.3rem; 
   }
-  /* Ukryj niektóre kolumny na bardzo małych ekranach */
-  .table th:nth-child(2), 
-  .table td:nth-child(2) {
-    display: none;
-  }
 /* Dla bardzo małych ekranów */
 @media (max-width: 576px) {
   .table th:nth-child(5), 
