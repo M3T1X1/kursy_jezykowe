@@ -10,17 +10,8 @@
 <body>
     <div class="register-container form-container bg-white rounded shadow-sm">
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
         @include('auth.register-form')
+
     </div>
 </body>
 </html>

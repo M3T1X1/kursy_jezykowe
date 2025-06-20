@@ -26,8 +26,25 @@ class RejestracjaController extends Controller
             'adres_zdjecia' => 'nullable',
             'zdjecie' => 'nullable|image|max:2048',
         ], [
+            'email.required' => 'Pole Email jest wymagane.',
+            'email.email' => 'Podaj poprawny adres email.',
+            'email.unique' => 'Ten adres email jest już zajęty.',
+
+            'password.required' => 'Pole Hasło jest wymagane.',
+            'password.min' => 'Hasło musi mieć co najmniej 6 znaków.',
+
+            'imie.required' => 'Pole Imię jest wymagane.',
+
+            'nazwisko.required' => 'Pole Nazwisko jest wymagane.',
+
+            'adres.required' => 'Pole Adres jest wymagane.',
             'adres.regex' => 'Adres musi być w formacie: ul. Nazwa, Miasto',
+
+            'nr_telefonu.required' => 'Pole Nr telefonu jest wymagane.',
             'nr_telefonu.regex' => 'Numer telefonu musi składać się z dokładnie 9 cyfr.',
+
+            'zdjecie.image' => 'Plik musi być obrazem (jpg, png, itp.).',
+            'zdjecie.max' => 'Zdjęcie nie może być większe niż 2MB.',
         ]);
 
         if ($request->hasFile('zdjecie')) {

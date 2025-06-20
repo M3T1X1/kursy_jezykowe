@@ -56,11 +56,31 @@ public function update(Request $request, $id_klienta)
         'haslo' => 'nullable|min:6',
         'imie' => 'required',
         'nazwisko' => 'required',
-        'adres' => 'required',
-        'nr_telefonu' => 'required',
+        'adres' => ['required', 'regex:/^ul\.\s*.+,\s*.+$/i'],
+        'nr_telefonu' => ['required', 'regex:/^\d{9}$/'],
         'adres_zdjecia' => 'nullable',
         'zdjecie' => 'nullable|image|max:2048',
-    ]);
+    ], [
+            'email.required' => 'Pole Email jest wymagane.',
+            'email.email' => 'Podaj poprawny adres email.',
+            'email.unique' => 'Ten adres email jest już zajęty.',
+
+            'password.required' => 'Pole Hasło jest wymagane.',
+            'password.min' => 'Hasło musi mieć co najmniej 6 znaków.',
+
+            'imie.required' => 'Pole Imię jest wymagane.',
+
+            'nazwisko.required' => 'Pole Nazwisko jest wymagane.',
+
+            'adres.required' => 'Pole Adres jest wymagane.',
+            'adres.regex' => 'Adres musi być w formacie: ul. Nazwa, Miasto',
+
+            'nr_telefonu.required' => 'Pole Nr telefonu jest wymagane.',
+            'nr_telefonu.regex' => 'Numer telefonu musi składać się z dokładnie 9 cyfr.',
+
+            'zdjecie.image' => 'Plik musi być obrazem (jpg, png, itp.).',
+            'zdjecie.max' => 'Zdjęcie nie może być większe niż 2MB.',
+        ]);
 
     if ($request->hasFile('zdjecie')) {
             $path = $request->file('zdjecie')->store('klienci', 'public');
